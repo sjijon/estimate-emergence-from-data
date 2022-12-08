@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "This code allows to reproduce the results from our preprint. Please cite as follows:"
+authors:
+- family-names: "Jijón"
+  given-names: "Sofía"
+  orcid: "https://orcid.org/0000-0002-1292-0512"
+- family-names: "Czuppon"
+  given-names: "Peter"
+  orcid: "https://orcid.org/0003-1462-7237"
+- family-names: "Blanquart"
+  given-names: "François"
+  orcid: "https://orcid.org/0003-0591-2466"
+- family-names: "Débarre"
+  given-names: "Florence"
+  orcid: "https://orcid.org/0000-0003-2497-833X"
+title: "Estimating the date of emergence of an epidemic outbreak from detection data: Applications to COVID-19"
+# doi: 
+date-released: 2022-12-31
+url: "https://github.com/sjijon/estimate-emergence-from-data"
