@@ -27,3 +27,8 @@ While the first infection by an emerging disease is often unknown, information o
 - `Processes` contains the functions used repeatedly in each application.
 
 - `SetParameters_EpiContext` contains the parametrizations for each application of the model
+
+## Implementation details
+
+Simulations are built in `Julia` version 1.8.0. Figures are built in `R` version 4.1.2, using the `ggplot2` package version 3.3
+
