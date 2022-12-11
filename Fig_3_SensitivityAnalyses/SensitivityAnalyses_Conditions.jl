@@ -19,9 +19,9 @@ using DataFrames
 to = TimerOutput()
 
 ## Load user functions
-include("../../Processes/InfectionProcess.jl")
-include("../../Processes/DetectionProcess.jl")
-include("../../Processes/DefineStructs.jl")
+include("../Processes/InfectionProcess.jl")
+include("../Processes/DetectionProcess.jl")
+include("../Processes/DefineStructs.jl")
 
 ## Display new run in the REPL
 println("\n\n.................NEW RUN.................\n")
