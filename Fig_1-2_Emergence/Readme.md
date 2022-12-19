@@ -2,19 +2,21 @@
 
 Code to reproduce Figs 1 and 2 of the main text.
 
-- `Run_EstimateEmergence` is the main script. It runs the infection and detection model on each epidemiological context (see the pseudo-algorithm in the Appendix).
-    <br> User-determined options:
-        - Select the epidemiological context (`Alpha_UK` or `COVID-19_Wuhan`; lines 30-31)
-        - Select how many accepted simulations to retrieve (lines 34)
-        - Select wether or not to save the results (lines 40-41)
+- `Run_EstimateEmergence` 
+    <br> Main script running the infection and detection model on each epidemiological context (see the pseudo-algorithm in the Appendix).
+    <br> User-determined options:</br>
+    - Select the epidemiological context (`Alpha_UK` or `COVID-19_Wuhan`; lines 30-31)
+    - Select how many accepted simulations to retrieve (line 34)
+    - Select wether or not to save the results (lines 40-41)
 
 
-- `Plot_Results_Emergence` Plots figures 1 and 2:
+- `Plot_Results_Emergence` 
+    <br> Script plotting Figures 1 (Alpha) and 2 (COVID-19):
     - Epidemic curve from the case data and the 
     - Violin plots for the estimates of the emergence date
     - Violin plots for the results from previous studies: 
-        - For the case of the Alpha variant in UK, we compare our results to i) an updated version of the results on emergence presented in (Czuppon et al., 2021), by setting R=1.9 (as in Hill et al., instead of 2.5) and using a negative-binomial distribution for the secondary infections (instead of Poisson) and ii) the tMRCA estimated by (Hill et al., 2021; personal communication).
-        - For the case of the COVID-19 cases in Wuhan, we compare our results to the estimates of emergence presented in (Pekar et al., 2022; personal communication)
+        - <strong>Alpha variant in the UK:</strong> We compare our results to i) an updated version of the results on emergence presented in (Czuppon et al., 2021), by setting R=1.9 (as in Hill et al., instead of 2.5) and using a negative-binomial distribution for the secondary infections (instead of Poisson) and ii) the tMRCA estimated by (Hill et al., 2021; personal communication).
+        - <strong>COVID-19 cases in Wuhan:</strong> We compare our results to the estimates of emergence presented in (Pekar et al., 2022; personal communication)
 
 
 ### References
