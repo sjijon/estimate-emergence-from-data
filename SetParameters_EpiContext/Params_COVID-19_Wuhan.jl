@@ -2,8 +2,8 @@
 ## 
 ## Infectious disease: COVID-19
 ## Location: Wuhan
-## Period: December 8-31, 2019
-## Data: date of symptoms onset (N=174)
+## Period: Dec 8-Jan 19, 2019
+## Data: date of symptoms onset (N=3072)
 #################################################
 
 ##
@@ -34,12 +34,12 @@ Date_N = Dates.Date(data[end,1])
 t_detect_max = 90
 
 ##  Time from infection to case declaration (clinically)
-##  ~ Gamma distribution (mean=6.5,std=2.6) [Backer et al. Eurosurveillance, 2020]
+##  ~ Gamma distribution (mean=6.5,std=2.6) (Backer et al. Eurosurveillance, 2020)
 shape_detect = 6.5  # kappa = mean^2/std^2
 scale_detect = 1.04 # theta = std^2/mean
 
 ##  Probability of detection
-p_detect = 0.15             # Acertainement rate [Hao et al., Nature, 2020]
+p_detect = 0.15             # Acertainement rate (Hao et al., Nature, 2020)
 
 ##
 ## 2.2. Offspring generation

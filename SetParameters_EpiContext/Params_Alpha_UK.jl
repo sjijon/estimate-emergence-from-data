@@ -2,10 +2,10 @@
 ## 
 ## Infectious disease: Alpha variant
 ## Location: UK
-## Period: Sept. 20-Nov. 30, 2021
+## Period: Sep 20-Nov 11, 2021
 ## Data: date of sequenced samples of the B.1.1.7 variant
 ##       cases submitted up to Nov 30th (Gisaid)
-##       (N=457)
+##       (N=406)
 #################################################
 
 ##
@@ -53,7 +53,7 @@ scale_inf = 0.833
 ## Number of secondary infections 
 ## ~ NegativeBinomial(kappa=successes,p_neg=success rate)
 kappa = 0.57                # dispersion parameter (Salje et al., Science, 2020)
-R0 = 1.9      # Hill et al.
+R0 = 1.9                    # (Hill et al., Virus Evolution, 2021)
 p_neg = kappa/(kappa+R0)    # success probability for the negative-binomial      
 
 ## Stopping criteria
