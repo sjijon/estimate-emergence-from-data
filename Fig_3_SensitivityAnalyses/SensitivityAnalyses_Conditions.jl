@@ -40,10 +40,8 @@ EpiContext = "Alpha_UK"
 Var_str = "Varying_tol_delay"
 
 ## Number of repetitions
-# repeats = 5000
-# repeats = 1000
-repeats = 10
-# repeats = 1
+repeats = 5000
+
 
 ## Select wether or not to save results
 SaveResults = "Yes";
