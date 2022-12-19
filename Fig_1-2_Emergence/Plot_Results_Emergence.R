@@ -89,22 +89,21 @@ epi_uk = ggplot(data=Data_UK,
     annotate("segment", x=as.Date("2020-09-20"), y=25, xend=as.Date("2020-09-20"), yend=2,
              arrow = arrow(length=unit(6,"pt"))) +
     annotate("text", x=as.Date("2020-09-20"), y=35, label="1st case", size=3) +
-    scale_x_date(name="\nDate of sample collection (2020)",
+    scale_x_date(name="Date of sample collection (2020)",
                  limits=as.Date(c("2020-05-26","2020-11-14")),
                  breaks=Dates_UK,
                  minor_breaks=Dates_UK_minor,
                  guide="axis_minor",
                  date_labels="%b %d",
                  expand=c(0,0)) +
-    labs(#title="COVID-19 in Wuhan",
-        y="Daily number of cases") +
+    labs(y="Daily number of Alpha cases") +
     scale_y_continuous(expand=c(0, 2),
     ) +
     theme_classic() +
     theme(axis.text.x=element_text(angle=90, hjust=1, vjust=1),
         axis.ticks.length=unit(6, "pt"),
         ggh4x.axis.ticks.length.minor=rel(0.5),
-        plot.margin = unit(c(0.2,0,1,0), "cm")) +
+        plot.margin = unit(c(t=1,r=0.2,b=0,l=0.2), "cm")) +
     NULL
 # epi_uk
 
@@ -115,7 +114,7 @@ epi_uk = ggplot(data=Data_UK,
 ##
 ## Our estimates
 ##
-Results_Alpha=read.csv(file="Fig_1-2_Emergence/Output/Alpha_UK/Cases_EpiSize_Time_406cases_10sims.csv") %>% 
+Results_Alpha=read.csv(file="Fig_1-2_Emergence/Output/Alpha_UK/Cases_EpiSize_Time_406cases_5000sims.csv") %>% 
     as_tibble()
 
 Results_Alpha = Results_Alpha %>%
@@ -176,7 +175,8 @@ Estimates_UK = rbind(Results_Alpha,Results_Czuppon2021new,Results_Hill2022)
 ## Plot ##########
 estim_uk = ggplot(data=Estimates_UK, 
                   aes(x=Date, y=Study, fill=Study,color=Study)) +
-    geom_violin(trim=FALSE,width=1, size=0.2, alpha=0.3) + 
+    geom_violin(width=1, size=0.2, alpha=0.3,trim=TRUE) + 
+    # geom_boxplot(width=0.25,size=0.2,alpha=0,outlier.shape=NA) +
     stat_summary(fun = "mean",
                  geom = "point",
                  shape=5, # Diamond
@@ -185,6 +185,13 @@ estim_uk = ggplot(data=Estimates_UK,
                  geom = "point",
                  shape=3, # Cross
                  size=3) +
+    ## Add IqR
+    geom_segment(x=min(Results_UK_IqR$Date), xend=min(Results_UK_IqR$Date),
+                 y=2.7,yend=3.3,
+                 size=0.2, color=MyBlue) + 
+    geom_segment(x=max(Results_UK_IqR$Date), xend=max(Results_UK_IqR$Date),
+                 y=2.7,yend=3.3,
+                 size=0.2, color=MyBlue) +
     ## Annotate estimates
     annotate(geom="text", 
              x=as.Date("2020-09-23"), y=3, 
@@ -295,21 +302,22 @@ epi_wu = ggplot(data=Data_Wuhan,
              arrow = arrow(length=unit(6,"pt"))) +
     annotate("text", x=as.Date("2019-12-10"), y=100, label="1st case", size=3) +
     ## 4. Axis, legends et al.
-    scale_x_date(name="\nDate of symptoms onset (2019-2020)",
+    scale_x_date(name="Date of symptoms onset (2019-2020)",
                  limits=as.Date(c("2019-09-11","2020-01-22")),
                  breaks=Dates_WU,
                  minor_breaks=Dates_WU_minor,
                  guide="axis_minor",
                  date_labels="%b %d",
                  expand=c(0, 0)) +
-    labs(#title="COVID-19 in Wuhan",
-        y="Daily number of cases") +
-    scale_y_continuous(expand=c(0, 5)) +
+    labs(y="Daily number of COVID-19 cases") +
+    scale_y_continuous(expand=c(0, 5),
+                       # sec.axis=sec_axis(~.*coeff,name="Cumulative cases")
+    ) +
     theme_classic() +
     theme(axis.text.x=element_text(angle=90, hjust=1, vjust=1),
         axis.ticks.length=unit(6, "pt"),
         ggh4x.axis.ticks.length.minor=rel(0.5),
-        plot.margin = unit(c(0,0,1,0), "cm")) +
+        plot.margin = unit(c(t=1,r=0.2,b=0,l=0.2), "cm")) +
     NULL
 # epi_wu
 
@@ -322,7 +330,7 @@ epi_wu = ggplot(data=Data_Wuhan,
 ##
 Date_N = as.Date("2020-01-19")
 
-Results_Wuhan=read.csv(file="Fig_1-2_Emergence/Output/COVID-19_Wuhan/Cases_EpiSize_Time_3072cases_10sims.csv") %>% 
+Results_Wuhan=read.csv(file="Fig_1-2_Emergence/Output/COVID-19_Wuhan/Cases_EpiSize_Time_3072cases_5000sims.csv") %>% 
     as_tibble() %>%
     mutate(Date=as.Date(Date_N-MinTime),
            Study=as.factor("Estimates")) %>%
@@ -359,7 +367,7 @@ Estimates_WU = rbind(Results_Wuhan,Results_Pekar2022)
 
 estim_wu = ggplot(data=Estimates_WU,
                   aes(x=Date,y=Study,fill=Study,color=Study)) +
-    geom_violin(width=0.5, size=0.2, alpha=0.3) + 
+    geom_violin(width=0.5, size=0.2, alpha=0.3, trim=TRUE) + 
     stat_summary(fun = "mean",
                  geom = "point",
                  shape=5,
@@ -368,6 +376,13 @@ estim_wu = ggplot(data=Estimates_WU,
                  geom = "point",
                  shape=3,
                  size=3) +
+    ## Add IqR
+    geom_segment(x=min(Results_Wuhan_IqR$Date), xend=min(Results_Wuhan_IqR$Date),
+                 y=1.7,yend=2.3,
+                 size=0.2, color=MyBlue) + 
+    geom_segment(x=max(Results_Wuhan_IqR$Date), xend=max(Results_Wuhan_IqR$Date),
+                 y=1.7,yend=2.3,
+                 size=0.2, color=MyBlue) + 
     ## Annotate estimates
     annotate(geom="text", 
              x=as.Date("2019-12-12"), y=2, 
@@ -405,15 +420,17 @@ estim_wu = ggplot(data=Estimates_WU,
     theme(legend.position="none",
           axis.text.x=element_text(angle=90, hjust=1, vjust=1),
           axis.ticks.length=unit(6, "pt"),
-          ggh4x.axis.ticks.length.minor=rel(0.5)) +
+          ggh4x.axis.ticks.length.minor=rel(0.5),
+          plot.margin = unit(c(t=1,r=0.2,b=0,l=0.2), "cm")) +
     guides(fill = guide_legend(byrow = TRUE)) + # Important to increase space between legend elements
     NULL
 
-
+# Create one figure
 p_wu=plot_grid(epi_wu, estim_wu,
                ncol=1, nrow=2,
                rel_heights=c(3,2))
 p_wu 
+ 
 
 ####
 #### 3. PRINT ALL ESTIMATES ############
