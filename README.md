@@ -22,7 +22,7 @@ While the first infection by an emerging disease is often unknown, information o
 
 - `Data` contains the files containing the time series of the early cases we use to calibrate the model for different epidemiological contexts, as well as the emergence or tMRCA estimates from previously published studies.
 
-- `Fig 1-2 and Fig3` contain the codes to reproduce the results (`.jl`) and figures (`.R`) presented in the article. See more details in the `Readme.md` files contained in each folder. 
+- `Fig 1-2 - Emergence` and `Fig3 - Sensitivity Analyses` contain the codes to reproduce the results (`.jl`) and figures (`.R`) presented in the main text. See more details in the `Readme.md` files contained in each folder. 
 
 - `Processes` contains the functions used repeatedly in each application.
 
