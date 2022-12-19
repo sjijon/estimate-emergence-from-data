@@ -134,7 +134,7 @@ end # timer (parameters)
             global R0_str = string(Int(10*R0))
             global p_detect_str = string(Int(10000*p_detect))
             global kappa_str = string(Int(round(100*kappa)))
-            global dir_output = string("Fig3_SensitivityAnalyses/Output/",EpiContext,"/SensitivityAnalyses/",Var_str)
+            global dir_output = string("Fig3_SensitivityAnalyses/Output/",EpiContext,"/",Var_str)
             mkpath(dir_output)
 
             ## Cumulative cases
