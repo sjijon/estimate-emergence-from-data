@@ -47,7 +47,7 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
         
         ## Varying parameters
         Pdetect_var=c(0.005,0.0105,0.025) # Baseline: 0.0105
-        R0_var=c(1.6,1.9,2.5)             # Baseline: 1.9
+        R0_var=c(1.7,1.9,2.1)             # Baseline: 1.9
         kappa_var=c(0.35,0.57,0.75)       # Baseline: 0.57
         tol_epi_var=c(0.3,0.5)        # Baseline: 0.3
         tol_delay_var=c(0.8,0.9,1.0)      # Baseline: 0.9
@@ -66,9 +66,9 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
         
         x_lims=as.Date(c("2020-06-14", "2020-09-20"))
         y_lims=c(0,0.07)
-        Ytitle="Alpha\n"
+        Ytitle="Alpha"
         MyXLabel="\nDate of emergence (2020)"
-        MyPanelLabels=c("A","C","E","G","I")
+        MyPanelLabels=c(" ","A","C","E","G","I")
         StatPos = as.Date(c("2020-05-10","2020-05-14","2020-06-05","2020-06-09"))
     }else if (EpiContext == "COVID-19_Wuhan"){
         # Date of N-th case
@@ -104,9 +104,9 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
         
         x_lims=as.Date(c("2019-10-14", "2019-12-10"))
         y_lims=c(0,0.08)
-        Ytitle="COVID-19\n"
+        Ytitle="COVID-19"
         MyXLabel="\nDate of emergence (2019)"
-        MyPanelLabels=c("B","D","F","H","J")
+        MyPanelLabels=c(" ","B","D","F","H","J")
         StatPos = as.Date(c("2019-10-10","2019-10-14","2019-11-05","2019-11-09"))
     }
     
@@ -189,7 +189,7 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
         scale_x_date(name="",
                      breaks=MyBreaks,
                      date_labels="%b %d") +
-        ggtitle(Ytitle) +
+        ggtitle("") +
         theme_classic() +
         theme(legend.position=c(0.12,0.8),
               plot.title=element_text(size=14), # face="bold"
@@ -571,14 +571,34 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
     ####
     #### Put in one column and save ################################################################
     ####
-    p_draft=plot_grid(p_R0,p_kappa,p_pdetect,p_tol_epi,p_tol_delay,
+    title = ggdraw() + 
+        draw_label(Ytitle,
+            fontface='bold',x=0,hjust=0) +
+        theme(plot.margin = margin(0,0,0,24)) # align title
+    
+    p_draft=plot_grid(title,p_R0,p_kappa,p_pdetect,p_tol_epi,p_tol_delay,
                       labels=MyPanelLabels,
-                      ncol=1, nrow=5)
+                      ncol=1, nrow=6,
+                      rel_heights = c(.1,1,1,1,1,1))
     print(p_draft)
     
     ggsave(paste0("Communicating results/Articles/Figures/SensitivityAnalyses_Conditions_",EpiContext,".pdf"),
            plot=p_draft, height=30, width=10, units=c("cm"))
     
+    ####
+    #### Save individual figs ###########################################################
+    ####
+    filedir=paste0("Time distribution for N cases/Display_and_plot_results/SensitivityAnalyses/",EpiContext,"_SensitivityAnalyses_")
+    ggsave(paste0(filedir,"R0.pdf"),
+           plot=p_R0, height=10, width=12, units=c("cm"))
+    ggsave(paste0(filedir,"kappa.pdf"),
+           plot=p_kappa, height=10, width=12, units=c("cm"))
+    ggsave(paste0(filedir,"p_detect.pdf"),
+           plot=p_pdetect, height=10, width=12, units=c("cm"))
+    ggsave(paste0(filedir,"tol_epi.pdf"),
+           plot=p_tol_epi, height=10, width=12, units=c("cm"))
+    ggsave(paste0(filedir,"tol_delay.pdf"),
+           plot=p_tol_delay, height=10, width=12, units=c("cm"))
     
 }
 
@@ -594,4 +614,4 @@ Table_Results_SA = Results_SA %>%
 Table_Results_SA
 
 print(xtable(Table_Results_SA, type = "latex",digits=c(0,0,1,2,4,1,1,0)), include.rownames=FALSE,
-      file = "Time distribution for N cases/Display_and_plot_results/SensibilityAnalyses/Table_EmergenceDate_SA_Params.tex")
+      file = "Output/SensibilityAnalyses/Table_EmergenceDate_SA_Params.tex")
