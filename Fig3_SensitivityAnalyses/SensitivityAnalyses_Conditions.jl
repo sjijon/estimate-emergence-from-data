@@ -9,14 +9,9 @@
 ## 0. Setup #####################################
 ##
 ## Load packages
-using LinearAlgebra, SparseArrays
+using DelimitedFiles
 using StatsBase, Distributions, Random
-using Printf, DelimitedFiles, CSV
-using Dates, TimerOutputs
-using DataFrames
-
-## Create and start the timer
-to = TimerOutput()
+using Dates
 
 ## Load user functions
 include("../Processes/InfectionProcess.jl")
