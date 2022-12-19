@@ -1,0 +1,246 @@
+% Infection and detection process diagram
+%
+% Sofia JIJON ALBAN
+% iEES Paris
+% August 2022
+%____________________________________________________
+\documentclass{standalone}
+
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{tikz} \usetikzlibrary{calc, arrows.meta, intersections, patterns, positioning, shapes.misc, fadings, through,decorations.pathreplacing}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.7}
+\usepackage{filecontents}
+
+\usetikzlibrary{backgrounds}
+
+% Uncomment for sans version
+%\usepackage{helvet}
+%\renewcommand{\familydefault}{\sfdefault}	
+
+% Colors
+\definecolor{ColorOne}{named}{MidnightBlue}
+\definecolor{ColorTwo}{named}{MidnightBlue}
+
+% ECMTB Poster
+\definecolor{MyOrange}{rgb}{0.75, 0.3, 0}
+\definecolor{MyBrown}{rgb}{0.28, 0.20, 0.20}
+\definecolor{MyGray}{rgb}{0.30, 0.30, 0.30}
+\definecolor{MyGreen}{rgb}{0.30, 0.35, 0.18}
+\definecolor{MyBlue}{rgb}{0.1, 0.3, 0.4}
+\definecolor{MyLightBlue}{rgb}{	0.36, 0.67, 0.85}
+
+\definecolor{ColorOne}{named}{MyBlue} 
+\definecolor{ColorTwo}{named}{MyLightBlue}
+\definecolor{ColorThree}{named}{MyOrange}
+
+
+\begin{document}
+\begin{tikzpicture}[very thick]
+
+%% Labels
+\node (A) at (-1,6.5) {\large \bf A}; 
+\node (B) at (-1,-2) {\large \bf B}; 
+
+%% Time axis
+\coordinate (O) at (0,0); 								% Origin
+\coordinate (F) at (14.5,0); 							% End
+\draw[->] (O) -- (F) node[right=0pt]{Time ($t$)}; 				% Arrow
+\node[right=0pt,rotate=90] at ($(O)+(-1,0)$) {\large Infection and detection model}; 	% y-axis title
+
+%% Legend
+\node (L) at ($(F)+(3,5.5)$) {\bf \large Event};
+\draw [ColorOne,fill=ColorOne!80] ($(L)+(-0.4,-0.8)$) circle (8pt) node[black,right=8pt] {First infection};
+\draw [ColorOne] ($(L)+(-0.4,-1.5)$) circle (8pt) node[black,right=8pt] {New infection};
+\draw [ColorOne] ($(L)+(-0.6,-2.9)$) -- ($(L)+(-0.16,-2.9)$) node[black,right=2pt] {Transmission};
+
+%% Coordinates
+\coordinate (I0) at ($(O)+(0.35,0.6)$); 		% t_0 % Moved to the right
+\coordinate (I1) at ($(I0)+(2.15,1)$);		% t_1 $ %  Changed to remain at the same position in spite of I0
+\coordinate (I2) at ($(I1)+(2.6,1.5)$);		% t_2
+\coordinate (I3a) at ($(I2)+(2.6,1.2)$); 	% t_5
+\coordinate (I3b) at ($(I2)+(1.5,-1.2)$);	% t_3
+\coordinate (I4b) at ($(I3a)+(3.2,-0.8)$); 	% t_8
+\coordinate (I4c) at ($(I3b)+(1.9,0.6)$);	% t_4
+\coordinate (I4d) at ($(I3b)+(3.1,-0.8)$); 	% t_6
+\coordinate (I4a) at ($(I3a)+(2.6,0.8)$); 	% t_7
+\coordinate (I5) at ($(I4b)+(1.7,-0.8)$); 	% t_9
+
+\coordinate (D1) at ($(I1)+(2.1,0)$); 		% tau_1
+\coordinate (D2) at ($(I3a)+(1.5,0)$); 	% tau_3
+\coordinate (D3b) at ($(I3b)+(1.5,0)$);
+\coordinate (D4a) at ($(I4a)+(2.7,0)$);
+\coordinate (D4c) at ($(I4c)+(2.8,0)$); 	% tau_N
+\coordinate (D5) at ($(I5)+(1.1,0)$); 		% tau_M
+
+%% Days - Grid
+%\foreach \i in {0,2,...,14}{
+%	\draw [thin,black!10] (\i,-5)--(\i,6);
+%}
+
+
+
+
+% Generation time distribution
+\begin{axis}[at={($(I1)+(-75, 45)$)},
+		axis lines=none,
+		ticks=none,
+		width=7cm,
+      		height=4cm]%
+	\addplot[ColorThree,very thick] table [x=x, y=y, col sep=comma] {GammaDist.csv};
+	\node at (5, 120) [rotate=90,ColorThree, align=center, font=\footnotesize] {Generation time \\distribution};
+\end{axis}
+\draw[ColorThree,thin,dashed] (I1) -- ($(I1)+(0,3)$);
+
+%% Second infection
+%\draw [ColorOne] ($(I0)+(0.1,0.2)$) -- ($(I1)+(-0.2,0)$);
+%\draw [ColorOne,fill=white] (I1) circle (8pt);
+
+
+%% Lines - Transmission
+%% up
+\foreach \i/\j in {I0/I1,I1/I2,I2/I3a,I3a/I4a,I3b/I4c}{
+	\draw [ColorOne] ($(\i)+(0.1,0.2)$) -- ($(\j)+(-0.2,0)$);
+}
+%% down
+\foreach \i/\j in {I2/I3b,I3a/I4b,I3b/I4d,I4b/I5}{
+	\draw [ColorOne] ($(\i)+(0.1,-0.2)$) -- ($(\j)+(-0.2,0)$);
+}
+%% unobserved
+\draw [ColorOne] ($(I4b)+(0.1,0.2)$) -- ($(I4b)+(3.1,1)$);
+
+%%
+%% Time points - Time series
+%%
+%% Infections
+\foreach \i/\j in {I0/0,I1/1,I2/2,I3b/3,I4c/4,I3a/5,I4d/6,I4a/7,I4b/8,I5/9}{
+	\draw [dashed,thin,ColorOne] ($(\i)+(0,-0.2)$) -- ($(O)!(\i)!(F)$) node[below=5pt] {$t_\j$};
+}
+
+
+%% Line - Infection to case
+\foreach \i/\j in {D1/I1,D2/I3a,D3b/I3b,D4a/I4a,D4c/I4c,D5/I5}{
+	\draw [ColorOne!35] ($(\j)+(0.2,0)$) -- ($(\i)+(-0.2,0)$);
+}
+
+%%
+%% Circles
+%%
+%% 1st infection
+\draw [ColorOne,fill=ColorOne!90] (I0) circle (8pt);
+
+%% New infections
+\foreach \i in {I1,I2,I3a,I3b,I4a,I4b,I4c,I4c,I4d,I5}{
+	\draw [ColorOne,fill=white] (\i) circle (8pt);
+}
+
+%% Additional ticks
+\foreach \j in {I0,I1,I2,I3a,I3b,I4a,I4b,I4c,I4c,I4d}{
+	\draw [ColorOne] ($($(O)!(\j)!(F)$)+(0,-3pt)$) -- ($($(O)!(\j)!(F)$)+(0,3pt)$);	
+}
+
+%%
+%% Cases
+%%
+
+% Legend
+\draw [ColorOne!45,fill=ColorOne!10] ($(L)+(-0.4,-2.2)$) circle (8pt) node [ColorOne!50]{\bf $y_n$} node[black,right=8pt] {New case};
+\draw [ColorOne!35] ($(L)+(-0.6,-3.4)$) -- ($(L)+(-0.16,-3.4)$) node[black,right=2pt] {Detection};
+
+%% unobserved
+%\draw [ColorOne!35] ($(I4b)+(0.2,0)$) -- ($(I4b)+(2.5,0)$);
+
+\foreach \i/\j in {D1/1,D2/3,D3b/2,D4a/N,D4c/4,D5/M}{
+	\draw [dashed,thin,ColorOne!50] ($(\i)+(0,-0.2)$) -- ($(O)!(\i)!(F)$) node[below=5pt] {$\tau_\j$};
+}
+%% Circles
+\foreach \i/\j in {D1/$y_{1}$,D2/$y_{3}$,D3b/$y_{2}$,D4a/$y_{N}$,D4c/$y_{4}$,D5/$y_{M}$}{
+\draw [ColorOne!45,fill=ColorOne!10] (\i) circle (8pt) node [ColorOne!60] {\small \j};
+}
+\foreach \i in {D1,D2,D3b,D4a,D4c}{
+	\draw [ColorOne!50] ($($(O)!(\i)!(F)$)+(0,-3pt)$) -- ($($(O)!(\i)!(F)$)+(0,3pt)$);	
+}
+%% Add (...) to axes
+	\draw (12,0) node[below=6pt,ColorOne!45] {$\ldots$} ; 	% Labels
+	\draw[ColorOne!45] (12,0.12) -- (12,-0.12); 			% Ticks
+
+
+
+%%
+%% Annotations
+%%
+%% Total cases
+
+\draw [decorate,decoration = {brace,raise=18pt,amplitude=10pt}, ColorOne!45] ($(O)!(D4a)!(F)$) -- ($(O)!(D1)!(F)$) node [midway, below=28pt] {Time series of the first $N$ cases};
+%\filldraw[draw=none,ColorOne,opacity=0.1] ($(O)!(D1)!(F)$) rectangle ($($(O)!(D4a)!(F)$)+(0,5.5)$);
+
+
+%%
+%% Epicurve
+%%
+%% Time axis
+\coordinate (O2) at (0,-6); % Origin
+\draw[->] (O2) -- ($(O2)+(F)$) node[right=0pt]{Days ($d$)}; % Arrow
+\def \ymaxbottom {3.35}
+\draw[->] (O2) -- ($(O2)+(0, \ymaxbottom)$);
+\node[right=0pt,rotate=90] at ($(O2)+(-1,-0.5)$) {\large Daily new cases ($Y$)}; 	% y-axis title
+
+
+%% rectangles of daily cases
+\fill [color=ColorOne!20,draw=white] ($(O2)+(4,0.05)$) rectangle ($(O2)+(6,1)$);
+\fill [color=ColorOne!20,draw=white] ($(O2)+(8,0.05)$) rectangle ($(O2)+(10,1)$);
+\fill [color=ColorOne!20,draw=white] ($(O2)+(8,1)$) rectangle ($(O2)+(10,2)$);
+\fill [color=ColorOne!20,draw=white] ($(O2)+(10,0.05)$)rectangle ($(O2)+(12,1)$);
+\fill [color=ColorOne!20,draw=white] ($(O2)
++(12,0.05)$) rectangle ($(O2)+(14,1)$);
+\fill [color=ColorOne!20,draw=white] ($(O2)+(12,1)$) rectangle ($(O2)+(14,2)$);
+
+%% Days
+
+%\coordinate (MID) at (1,0); % Uncomment to center the days labels
+\coordinate (MID) at (0,0); % Uncomment to align labels to the beginning of the day
+
+\foreach \i \j in {0/1,2/2,4/3,6/4,8/5,12/K,14/{K+1}}{
+	\draw ($(O2)+(\i,0)+(MID)$) node[below=3pt] {$d_{\j}$} ; 	% Labels
+	\draw ($(O2)+(\i,0.12)+(MID)$) -- ($(O2)+(\i,-0.12)+(MID)$); 			% Ticks
+}
+
+%% Add (...) to axes
+	\draw ($(O2)+(10,0)+(MID)$) node[below=8pt] {$\ldots$} ; 	% Labels
+	\draw ($(O2)+(10,0.12)+(MID)$) -- ($(O2)+(10,-0.12)+(MID)$); 			% Ticks
+
+%% Infections
+\foreach \i in {0,1,2}{
+	\draw ($(O2)+(0,\i)$) node[left=3pt] {\i} ; 	% Labels
+	\draw ($(O2)+(-0.12,\i)$) -- ($(O2)+(0.12,\i)$); 		% Ticks
+}
+
+
+%%% 1 day
+%\draw [decorate,decoration = {brace,raise=18pt,amplitude=10pt},
+%	black] ($(O2)+(4,0)$) -- ($(O2)+(2,0)$)   node [midway,below=32pt] {1 day};
+
+%% Main outcome
+\draw [decorate,decoration = {brace,raise=18pt,amplitude=10pt},
+	black] ($(O2)+(14,0)$) -- (O2)   node [midway,below=28pt] {Delay between first infection and $N$-th case};
+
+
+%% Add background rectangles for days
+% Define color of days background
+\colorlet{coldays}{black!05}
+%\draw[rect, anchor = south west, fill = black, inner sep = 0pt] at(0, 0){};
+
+\def \ymaxtop {11.7}
+
+\begin{scope}[on background layer]
+\foreach \i in {0, 4, 8, 12}{
+%	\draw[fill = coldays, draw = none]($(O2) + (\i, 0) + (MID)$) rectangle ($(O2) + (\i, 0) + (2, \ymax)$);
+	\draw[fill = coldays, draw = none]($(O2) + (\i, 6) + (MID)$) rectangle ($(O2) + (\i, 0) + (2, \ymaxtop)$);
+	\draw[fill = coldays, draw = none]($(O2) + (\i, 0) + (MID)$) rectangle ($(O2) + (\i, 0) + (2, \ymaxbottom)$);
+}
+\end{scope}
+
+
+
+\end{tikzpicture}
+\end{document}
