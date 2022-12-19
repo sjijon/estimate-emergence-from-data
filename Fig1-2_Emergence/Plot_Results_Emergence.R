@@ -114,13 +114,17 @@ epi_uk = ggplot(data=Data_UK,
 ##
 ## Our estimates
 ##
-Results_Alpha=read.csv(file="Fig_1-2_Emergence/Output/Alpha_UK/Cases_EpiSize_Time_406cases_5000sims.csv") %>% 
+Results_Alpha=read.csv(file="Fig1-2_Emergence/Output/Alpha_UK/Cases_EpiSize_Time_406cases_5000sims.csv") %>% 
     as_tibble()
 
 Results_Alpha = Results_Alpha %>%
     mutate(Date=as.Date(Date_N-MinTime),
            Study=as.factor("Estimates")) %>% 
     select(Date,Study)
+
+## IqR
+Results_UK_IqR = Res_Jijon2022_Alpha[Res_Jijon2022_Alpha$Date>=quantile(Res_Jijon2022_Alpha$Date,0.025,type=1) & Res_Jijon2022_Alpha$Date<=quantile(Res_Jijon2022_Alpha$Date,0.975,type=1),] 
+
 
 AllEstim = rbind(AllEstim, 
                  tibble(EpiContext = "Alpha_UK",
@@ -330,7 +334,7 @@ epi_wu = ggplot(data=Data_Wuhan,
 ##
 Date_N = as.Date("2020-01-19")
 
-Results_Wuhan=read.csv(file="Fig_1-2_Emergence/Output/COVID-19_Wuhan/Cases_EpiSize_Time_3072cases_5000sims.csv") %>% 
+Results_Wuhan=read.csv(file="Fig1-2_Emergence/Output/COVID-19_Wuhan/Cases_EpiSize_Time_3072cases_5000sims.csv") %>% 
     as_tibble() %>%
     mutate(Date=as.Date(Date_N-MinTime),
            Study=as.factor("Estimates")) %>%
@@ -442,9 +446,9 @@ AllEstim
 #### 4. SAVE RESULTS ###############
 ####
 if (SAVE_RES == "YES"){
-    ggsave("Fig_1-2_Emergence/Output/COVID-19_Wuhan/Emergence_COVID-19_Wuhan.pdf",
+    ggsave("Fig1-2_Emergence/Output/COVID-19_Wuhan/Emergence_COVID-19_Wuhan.pdf",
            plot=p_wu, height=12.5, width=16, units=c("cm"))
     
-    ggsave("Fig_1-2_Emergence/Output/Alpha_UK/Emergence_Alpha_UK.pdf",
+    ggsave("Fig1-2_Emergence/Output/Alpha_UK/Emergence_Alpha_UK.pdf",
            plot=p_uk, height=15, width=16, units=c("cm"))
 }
