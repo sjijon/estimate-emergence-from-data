@@ -28,8 +28,6 @@ println("\n1st case detected on $(Date(Date_1)), \nN-th case detected on $(Date(
 println("Total number of cases: $N_cases")
 
 println("\n\n2. MODEL CALIBRATION\n")
-println("Epi selection under condition: $Cond_Name")
-
 ##
 ## 1. DISPLAY RESULTS #########################################################
 ## The results array us of the following form:
@@ -140,4 +138,4 @@ println("\tMedian (95%IqR): $(round(100*(median(NumCases_tN./EpiSize_dK)),digits
 println("\nSecondary infections\n")
 ## Statistics of the mean of all simulations
 ## Median (95% IqR) of all means
-println("\tMedian of means: $(round(median(SecInfec_sim[:,:Mean]),digits=2)) (95%IqR: $(round(quantile(SecInfec_sim[:,:Mean],0.025),digits=2))-$(round(quantile(SecInfec_sim[:,:Mean],0.975),digits=2)))")
+println("\tMedian of means: $(round(median(SecInf_stats[:,1]),digits=2)) (95%IqR: $(round(quantile(SecInf_stats[:,1],0.025),digits=2))-$(round(quantile(SecInf_stats[:,1],0.975),digits=2)))")

@@ -55,7 +55,7 @@ SaveResults = "Yes";
 ##
 @timeit to "Parameters set" begin # timer
     ## Read parameters for chosen epi context
-    include(string("../SetParameters/Params_",EpiContext,".jl"))
+    include(string("../SetParameters_EpiContext/Params_",EpiContext,".jl"))
     println("\nEpidemiological context: $EpiContext")
     println("(N=$N_cases cases reported by $(Date(Date_N)))\n")
 
@@ -134,7 +134,7 @@ end # timer (parameters)
             global R0_str = string(Int(10*R0))
             global p_detect_str = string(Int(10000*p_detect))
             global kappa_str = string(Int(round(100*kappa)))
-            global dir_output = string("Time distribution for N cases/RunSims_to_Ncases/Output/",EpiContext,"/SensitivityAnalyses/",Var_str)
+            global dir_output = string("Fig3_SensitivityAnalyses/Output/",EpiContext,"/SensitivityAnalyses/",Var_str)
             mkpath(dir_output)
 
             ## Cumulative cases

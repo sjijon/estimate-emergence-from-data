@@ -52,7 +52,7 @@ SaveResults = "Yes";
 ##
 
 ## Read parameters for chosen epi context
-include(string("../../SetParameters_EpiContext/Params_",EpiContext,".jl"))
+include(string("../SetParameters_EpiContext/Params_",EpiContext,".jl"))
 println("\nEpidemiological context: $EpiContext")
 println("(N=$N_cases cases reported by $(Date(Date_N)))\n")
 
@@ -111,7 +111,7 @@ for param in VarParam
         ## Filepaths
         global tol_epi_str = string(Int(10*tol_epi))
         global tol_delay_str = string(Int(10*tol_delay))
-        global dir_output = string("Sensitivity_analyses/Fig_3_SensitivityAnalyses_Calibration/Output/",EpiContext,"/",Var_str)
+        global dir_output = string("Fig3_SensitivityAnalyses/Output/",EpiContext,"/",Var_str)
         mkpath(dir_output)
 
         ## Time to N cases
