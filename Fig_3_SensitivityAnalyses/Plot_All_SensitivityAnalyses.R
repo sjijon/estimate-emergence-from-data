@@ -601,17 +601,3 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
            plot=p_tol_delay, height=10, width=12, units=c("cm"))
     
 }
-
-##
-## Build TeX table #####################
-##
-library(xtable)
-
-Table_Results_SA = Results_SA %>%
-    select(-Mean) %>%
-    mutate(Results = paste0(format(Median, "%b %d")," (",format(P025, "%b %d"),'--',format(P975, "%b %d"),"), ", format(P975, "%Y"))) %>%
-    select(-c(Median,P025,P975))
-Table_Results_SA
-
-print(xtable(Table_Results_SA, type = "latex",digits=c(0,0,1,2,4,1,1,0)), include.rownames=FALSE,
-      file = "Output/SensibilityAnalyses/Table_EmergenceDate_SA_Params.tex")
