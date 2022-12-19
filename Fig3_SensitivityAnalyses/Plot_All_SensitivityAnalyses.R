@@ -130,7 +130,7 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
         p_detect_str=as.character(str_aux*p_detect)
         
         # Read data
-        SA_R0=read.csv(paste0("Time distribution for N cases/RunSims_to_Ncases/Output/",EpiContext,"/SensitivityAnalyses/Varying_R0/MinTime_N_EpiSize_R0_",R0_str,"_kappa_0",kappa_str,"_p_detect_0",p_detect_str,".csv"), header=FALSE) 
+        SA_R0=read.csv(paste0("Fig3_SensitivityAnalyses/Output/",EpiContext,"/Varying_R0/Cases_EpiSize_Time_R0_",R0_str,"_kappa_0",kappa_str,"_p_detect_0",p_detect_str,".csv"), header=FALSE) 
         colnames(SA_R0)=c("Time","Cases","EpiSize","Case1")
         
         SA_R0=SA_R0 %>%
@@ -216,7 +216,7 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
         p_detect_str=as.character(str_aux*p_detect)
 
         # Read data
-        SA_kappa=read.csv(paste0("Time distribution for N cases/RunSims_to_Ncases/Output/",EpiContext,"/SensitivityAnalyses/Varying_kappa/MinTime_N_EpiSize_R0_",R0_str,"_kappa_0",kappa_str,"_p_detect_0",p_detect_str,".csv"),
+        SA_kappa=read.csv(paste0("Fig3_SensitivityAnalyses/Output/",EpiContext,"/Varying_kappa/Cases_EpiSize_Time_R0_",R0_str,"_kappa_0",kappa_str,"_p_detect_0",p_detect_str,".csv"),
                           header=FALSE)
         colnames(SA_kappa)=c("Time","Cases","EpiSize","Case1")
 
@@ -305,7 +305,7 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
         p_detect_str=as.character(str_aux*p_detect)
 
         # Read data
-        SA_p_detect=read.csv(paste0("Time distribution for N cases/RunSims_to_Ncases/Output/",EpiContext,"/SensitivityAnalyses/Varying_pdetect/MinTime_N_EpiSize_R0_",R0_str,"_kappa_0",kappa_str,"_p_detect_0",p_detect_str,".csv"),
+        SA_p_detect=read.csv(paste0("Fig3_SensitivityAnalyses/Output/",EpiContext,"/Varying_pdetect/Cases_EpiSize_Time_R0_",R0_str,"_kappa_0",kappa_str,"_p_detect_0",p_detect_str,".csv"),
                              header=FALSE)
         colnames(SA_p_detect)=c("Time","Cases","EpiSize","Case1")
 
@@ -399,14 +399,10 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
         tol_epi_str=as.character(10*tol_epi)
 
         # Read data
-        SA_tol_epi=read_csv(paste0("Time distribution for N cases/RunSims_to_Ncases/Output/",EpiContext,"/SensitivityAnalyses/Varying_tol_epi/MinTime_N_EpiSize_tol_epi_0",tol_epi_str,"_tol_delay_0",tol_delay_str,".csv"),
+        SA_tol_epi=read_csv(paste0("Fig3_SensitivityAnalyses/Output/",EpiContext,"/Varying_tol_epi/Cases_EpiSize_Time_tol_epi_0",tol_epi_str,"_tol_delay_0",tol_delay_str,".csv"),
                             col_names=FALSE,
                             col_types = "ddddd")
         colnames(SA_tol_epi)=c("Time","Cases","EpiSize","Case1")
-
-        if (tol_epi==0.3){
-            SA_tol_epi = SA_tol_epi[2:5000,]
-        }
 
         SA_tol_epi=SA_tol_epi%>%
             mutate(EpiContext=EpiContext,
@@ -493,14 +489,10 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
         tol_epi_str=as.character(10*tol_epi)
 
         # Read data
-        SA_tol_delay=read_csv(paste0("Time distribution for N cases/RunSims_to_Ncases/Output/",EpiContext,"/SensitivityAnalyses/Varying_tol_delay/MinTime_N_EpiSize_tol_epi_0",tol_epi_str,"_tol_delay_0",tol_delay_str,".csv"),
+        SA_tol_delay=read_csv(paste0("Fig3_SensitivityAnalyses/Output/",EpiContext,"/Varying_tol_delay/Cases_EpiSize_Time_tol_epi_0",tol_epi_str,"_tol_delay_0",tol_delay_str,".csv"),
                               col_names=FALSE,
                               col_types = "ddddd")
         colnames(SA_tol_delay)=c("Time","Cases","EpiSize","Case1")
-
-        if (tol_delay==0.9){
-            SA_tol_delay = SA_tol_delay[2:5000,]
-        }
 
         SA_tol_delay=SA_tol_delay %>%
             mutate(Date=Date_N-Time,
@@ -582,22 +574,22 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
                       rel_heights = c(.1,1,1,1,1,1))
     print(p_draft)
     
-    ggsave(paste0("Communicating results/Articles/Figures/SensitivityAnalyses_Conditions_",EpiContext,".pdf"),
+    ggsave(paste0("Fig3_SensitivityAnalyses/Output/Fig3_SensitivityAnalyses_",EpiContext,".pdf"),
            plot=p_draft, height=30, width=10, units=c("cm"))
     
     ####
-    #### Save individual figs ###########################################################
+    #### Save individual figs ################### ########################################
     ####
-    filedir=paste0("Time distribution for N cases/Display_and_plot_results/SensitivityAnalyses/",EpiContext,"_SensitivityAnalyses_")
-    ggsave(paste0(filedir,"R0.pdf"),
+    filedir=paste0("Fig3_SensitivityAnalyses/Output/",EpiContext,"/")
+    ggsave(paste0(filedir,"Varying_R0/Fig3_SensitivityAnalyses_R0.pdf"),
            plot=p_R0, height=10, width=12, units=c("cm"))
-    ggsave(paste0(filedir,"kappa.pdf"),
+    ggsave(paste0(filedir,"Varying_kappa/Fig3_SensitivityAnalyses_kappa.pdf"),
            plot=p_kappa, height=10, width=12, units=c("cm"))
-    ggsave(paste0(filedir,"p_detect.pdf"),
+    ggsave(paste0(filedir,"Varying_pdetect/Fig3_SensitivityAnalyses_p_detect.pdf"),
            plot=p_pdetect, height=10, width=12, units=c("cm"))
-    ggsave(paste0(filedir,"tol_epi.pdf"),
+    ggsave(paste0(filedir,"Varying_tol_epi/Fig3_SensitivityAnalyses_tol_epi.pdf"),
            plot=p_tol_epi, height=10, width=12, units=c("cm"))
-    ggsave(paste0(filedir,"tol_delay.pdf"),
+    ggsave(paste0(filedir,"Varying_tol_delay/Fig3_SensitivityAnalyses_tol_delay.pdf"),
            plot=p_tol_delay, height=10, width=12, units=c("cm"))
     
 }
