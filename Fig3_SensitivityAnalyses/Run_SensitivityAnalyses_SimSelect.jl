@@ -31,11 +31,12 @@ EpiContext = "Alpha_UK"
 # EpiContext = "COVID-19_Wuhan"
 
 ## Varying parameter 
-# Var_str = "Varying_tol_epi"
-Var_str = "Varying_tol_delay"
+Var_str = "Varying_tol_epi"
+# Var_str = "Varying_tol_delay"
 
 ## Number of repetitions
-repeats = 5000
+# repeats = 5000
+repeats = 100
 
 
 ## Select wether or not to save results

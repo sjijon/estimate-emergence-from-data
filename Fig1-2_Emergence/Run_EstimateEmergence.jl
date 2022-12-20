@@ -31,8 +31,8 @@ EpiContext = "Alpha_UK"
 # EpiContext = "COVID-19_Wuhan"
 
 ## Number of repetitions
-# repeats = 5000
-repeats = 10
+repeats = 5000
+# repeats = 100
 
 ## Select wether or not to save results
 SaveResults = "Yes";

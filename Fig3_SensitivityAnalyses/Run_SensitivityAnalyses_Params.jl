@@ -40,6 +40,7 @@ Var_str = "Varying_R0"
 
 ## Number of repetitions
 repeats = 5000
+# repeats = 100
 
 ## Select wether or not to save results
 SaveResults = "Yes";
