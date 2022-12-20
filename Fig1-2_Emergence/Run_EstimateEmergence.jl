@@ -14,9 +14,9 @@ using StatsBase, Distributions, Random
 using Dates
 
 ## Load user functions and other setup scripts
-include("../Processes/InfectionProcess.jl")
-include("../Processes/DetectionProcess.jl")
-include("../Processes/DefineStructs.jl")
+include("../Routines/InfectionProcess.jl")
+include("../Routines/DetectionProcess.jl")
+include("../Routines/DefineStructs.jl")
 
 ## Display new run in the REPL
 println("\n\n.................NEW RUN.................\n")
@@ -242,4 +242,4 @@ end
 ##
 ## Display results
 ##
-include("../Processes/DisplayResults.jl")
+include("../Routines/DisplayResults.jl")
