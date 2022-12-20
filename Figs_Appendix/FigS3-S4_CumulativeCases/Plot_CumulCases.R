@@ -23,7 +23,8 @@ library(ggh4x)
 MyGray = 	"#A0A0A0" # Gray
 
 ## Simulations
-num_sims = 5000
+# num_sims = 5000
+num_sims = 10
 
 # sim_num = sample(1:num_sims, 1) # One random sim
 sim_num = 1
@@ -103,15 +104,15 @@ for (EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
     ####
     #### 2. READ RESULTS ################################################################
     ####
-    data_allsims_cases = read.csv(paste0("Fig1-2_Emergence/Output/",EpiContext,"/cumul_",N_Cases,"cases_",num_sims,"sims.csv"),
+    data_allsims_cases = read.csv(paste0("Fig1-2_Emergence/Output/",EpiContext,"/cumul_",N_Cases,"cases.csv"),
                                   header = TRUE)
     data_allsims_cases
     
     ####
     #### 4. PLOT ALL ################################################################
     ####
-    # Indx_Sims = seq(1,5000,20)        # Figure in the Appendix
-    Indx_Sims = seq(1,5000,500)       # 100 sims
+    # Indx_Sims = seq(1,num_sims,20)        # Figure in the Appendix
+    Indx_Sims = seq(1,num_sims,500)       # 100 sims
     # Indx_Sims = sample(1:num_sims, 1) # One random sim
     
     p_Nsims <- ggplot()
