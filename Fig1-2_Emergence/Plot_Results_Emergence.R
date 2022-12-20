@@ -449,9 +449,10 @@ AllEstim
 #### 4. SAVE RESULTS ###############
 ####
 if (SAVE_RES == "YES"){
-    ggsave("Fig1-2_Emergence/Output/COVID-19_Wuhan/Emergence_COVID-19_Wuhan.pdf",
+    ggsave("Fig1-2_Emergence/Output/Alpha_UK/Fig1_Emergence_Alpha_UK.pdf",
+           plot=p_uk, height=15, width=16, units=c("cm"))
+    
+    ggsave("Fig1-2_Emergence/Output/COVID-19_Wuhan/Fig2_Emergence_COVID-19_Wuhan.pdf",
            plot=p_wu, height=12.5, width=16, units=c("cm"))
     
-    ggsave("Fig1-2_Emergence/Output/Alpha_UK/Emergence_Alpha_UK.pdf",
-           plot=p_uk, height=15, width=16, units=c("cm"))
 }
