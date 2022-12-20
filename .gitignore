@@ -7,9 +7,9 @@ Output/
 #
 # R
 #
-.RData
-.Rhistory
-.Rproj
+*.RData
+*.Rhistory
+*.Rproj
 
 #
 # JULIA
