@@ -7,7 +7,7 @@ Sofía Jijón<sup>1</sup>, Peter Czuppon<sup>2</sup>, François Blanquart<sup>3<
 
 <sup>1</sup>Institute of ecology and environmental sciences of Paris (iEES Paris, UMR 7618), Sorbonne Université, CNRS, UPEC, IRD, INRAE, Paris 75005, France
 
-<sup>2</sup>Institute for Evolution and Biodiversity, University of Münster
+<sup>2</sup>Institute for Evolution and Biodiversity, University of Münster, Germany
 
 <sup>3</sup>Center for Interdisciplinary Research in Biology, CNRS, Collège de France, PSL Research University
 
@@ -24,7 +24,7 @@ While the first infection by an emerging disease is often unknown, information o
 
 - `Processes` contains the functions used repeatedly in each application.
 
-- `SetParameters_EpiContext` contains the parametrizations for each application of the model
+- `SetParameters_EpiContext` contains the parameterizations for each application of the model
 
 - `Fig1-2_Emergence` and `Fig3_Sensitivity Analyses` contain the codes to reproduce the results (`.jl`) and figures (`.R`) presented in the main text. See more details in the `Readme.md` files contained in each folder. 
 
