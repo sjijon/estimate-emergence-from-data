@@ -1,11 +1,7 @@
+#### Estimating the time distribution between the first infection and N cases
 ####
-#### Early epidemics
-#### iEES
-####
-#### November, 2022
-####
-#### Plot results from the sensitivity analyses
-#### Varying the last observation date
+#### Jijon S, Czuppon P, Blanqart F. and Débarre F
+#### iEES, 2022
 ####
 #### 0. SETUP ################################################################
 ####
@@ -22,12 +18,9 @@ library(cowplot)
 ## Colors
 ColorOne = "#00648C" # Blue
 ColorTwo = "#A01E18" # Red
-ColorThree = "#FFAA00" # Yellow
 ColorFour = "#6C6CEB" # Violet
 
 EpiContext="Alpha_UK"
-
-Cond_Name="Cond_Cumul_Delay"
 
 ####
 #### 1. Aplha #####################
@@ -71,7 +64,7 @@ for (Ncases in Ncases_var){
     Ncases_str=as.character(Ncases)
     
     # Read data
-    SA_Ncases=read.csv(paste0("Time distribution for N cases/RunSims_to_Ncases/Output/Alpha_UK/Cond_Cumul_Delay/MinTime_N_EpiSize_",Ncases_str,"cases_5000sims.csv")) %>%
+    SA_Ncases=read.csv(paste0("Figs_Appendix/FigS5-S6_SensitivityAnalyses_Datasets/Cases_EpiSize_Time_",Ncases_str,"cases.csv")) %>%
         as_tibble()
     colnames(SA_Ncases)=c("Time","Cases","EpiSize","Case1")
     

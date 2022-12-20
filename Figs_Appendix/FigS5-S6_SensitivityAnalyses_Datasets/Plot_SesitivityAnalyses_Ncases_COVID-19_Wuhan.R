@@ -1,11 +1,7 @@
+#### Estimating the time distribution between the first infection and N cases
 ####
-#### Early epidemics
-#### iEES
-####
-#### November, 2022
-####
-#### Plot results from the sensitivity analyses
-#### Varying the last observation date
+#### Jijon S, Czuppon P, Blanqart F. and Débarre F
+#### iEES, 2022
 ####
 #### 0. SETUP ################################################################
 ####
@@ -22,12 +18,9 @@ library(cowplot)
 ## Colors
 ColorOne = "#00648C" # Blue
 ColorTwo = "#A01E18" # Red
-ColorThree = "#FFAA00" # Yellow
 ColorFour = "#6C6CEB" # Violet
 
 EpiContext="COVID-19_Wuhan"
-
-Cond_Name="Cond_Cumul_Delay"
 
 ####
 #### 1. COVID-19 #####################
@@ -35,12 +28,6 @@ Cond_Name="Cond_Cumul_Delay"
 
 Ytitle="COVID-19"
 xAxisTitle = "\nDate of emergence (2019)"
-
-# Ncases_var=c(169,202,174,3072) # Baseline: 3072
-# LastDate = as.Date(c("2019-12-31","2019-12-31","2019-12-31","2020-01-19"))
-# DataSets = c("WHO 2021","Pekar 2022","WHO 2020","Pekar 2022")
-# MyLabels = c("Jan 19, 2020 (Pekar et al. 2022)","Dec 31, 2019 (Pekar et al. 2022)","Dec 31, 2019 (WHO 2021)","Dec 31, 2019 (WHO 2020)")
-
 
 Ncases_var=c(169,202,3072) # Baseline: 3072
 LastDate = as.Date(c("2019-12-31","2019-12-31","2020-01-19"))
