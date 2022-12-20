@@ -216,6 +216,7 @@ p_wu
 ####
 #### 3. SAVE FIGURES ############################################################
 ####
+dir.create("Figs_Appendix/FigS1-S2_CaseData/Output",showWarnings = FALSE)
 
 if (SAVE_RES == "YES"){
     ggsave("Figs_Appendix/FigS1-S2_CaseData/Output/FigS1_EpiCurve_Alpha_UK.pdf",

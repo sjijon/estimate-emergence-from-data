@@ -29,6 +29,7 @@ num_sims = 10
 # sim_num = sample(1:num_sims, 1) # One random sim
 sim_num = 1
 
+dir.create("Figs_Appendix/FigS3-S4_CumulativeCases/Output",showWarnings = FALSE)
 ###
 #### 1. READ DATA ################################################################
 ####
