@@ -23,8 +23,8 @@ library(ggh4x)
 MyGray = 	"#A0A0A0" # Gray
 
 ## Simulations
-# num_sims = 5000
-num_sims = 10
+num_sims = 5000
+# num_sims = 100
 
 # sim_num = sample(1:num_sims, 1) # One random sim
 sim_num = 1
@@ -69,7 +69,7 @@ for (EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
         
         DatesLimits = as.Date(c("2020-08-15","2020-11-30"))
         Xtitle = "\nDate of sample collection (2020)"
-        
+        fignum = 3
     }else if (EpiContext == "COVID-19_Wuhan"){
         DateN = as.Date("2020-01-19")
         date_breaks = seq(as.Date("2019-11-15"), as.Date("2020-01-10"), by = "5 days")
@@ -92,7 +92,7 @@ for (EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
         
         DatesLimits = as.Date(c("2019-11-21","2020-01-22"))
         Xtitle = "\nDate of symptoms onset (2019--2020)"
-        
+        fignum = 4
     }
     
     Obs_Cases$Date = as.Date(Obs_Cases$Date)
@@ -174,6 +174,6 @@ for (EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
     p_Nsims
     
     #### save figure
-    ggsave(paste0("Figs_Appendix/FigS3-S4_CumulativeCases/Output/CumulativeCases_",EpiContext,".pdf"),
+    ggsave(paste0("Figs_Appendix/FigS3-S4_CumulativeCases/Output/FigS",fignum,"_CumulativeCases_",EpiContext,".pdf"),
            plot=p_Nsims, width=14, height=10, units=c("cm"), dpi=600)
 }

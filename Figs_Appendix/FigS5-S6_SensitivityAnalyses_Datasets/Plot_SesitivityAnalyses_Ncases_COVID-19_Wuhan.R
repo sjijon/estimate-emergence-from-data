@@ -188,7 +188,7 @@ p_Ncases = ggplot(data=SA_Ncases_long,
 
 p_Ncases
 
-ggsave("Figs_Appendix/FigS5-S6_SensitivityAnalyses_Datasets/Output/COVID-19_Wuhan.pdf",
+ggsave("Figs_Appendix/FigS5-S6_SensitivityAnalyses_Datasets/Output/COVID-19_Wuhan/FigS6_SensitivityAnalyses_Datasets_COVID-19_Wuhan.pdf",
        plot=p_Ncases, height=10, width=12, units=c("cm"))
 
 ####
