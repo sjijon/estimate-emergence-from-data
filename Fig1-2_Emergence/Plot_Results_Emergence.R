@@ -114,7 +114,7 @@ epi_uk = ggplot(data=Data_UK,
 ##
 ## Our estimates
 ##
-Results_Alpha=read.csv(file="Fig1-2_Emergence/Output/Alpha_UK/Cases_EpiSize_Time_406cases_5000sims.csv") %>% 
+Results_Alpha=read.csv(file="Fig1-2_Emergence/Output/Alpha_UK/Cases_EpiSize_Time_406cases.csv") %>% 
     as_tibble()
 
 Results_Alpha = Results_Alpha %>%
@@ -334,7 +334,7 @@ epi_wu = ggplot(data=Data_Wuhan,
 ##
 Date_N = as.Date("2020-01-19")
 
-Results_Wuhan=read.csv(file="Fig1-2_Emergence/Output/COVID-19_Wuhan/Cases_EpiSize_Time_3072cases_5000sims.csv") %>% 
+Results_Wuhan=read.csv(file="Fig1-2_Emergence/Output/COVID-19_Wuhan/Cases_EpiSize_Time_3072cases.csv") %>% 
     as_tibble() %>%
     mutate(Date=as.Date(Date_N-MinTime),
            Study=as.factor("Estimates")) %>%

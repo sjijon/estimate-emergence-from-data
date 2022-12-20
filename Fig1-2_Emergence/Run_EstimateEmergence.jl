@@ -27,14 +27,12 @@ println("\n\n.................NEW RUN.................\n")
 ##
 ## Epidemiological context
 ##
-# EpiContext = "Alpha_UK"
-EpiContext = "COVID-19_Wuhan"
+EpiContext = "Alpha_UK"
+# EpiContext = "COVID-19_Wuhan"
 
 ## Number of repetitions
-repeats = 5000
-# repeats = 1000
-# repeats = 10
-# repeats = 1
+# repeats = 5000
+repeats = 10
 
 ## Select wether or not to save results
 SaveResults = "Yes";
@@ -75,9 +73,9 @@ if SaveResults == "Yes"
     mkpath(dir_output)
 
     ## Per-day cumulative number of cases (per SimEpi)
-    file_cumul_cases = string(dir_output,"/cumul_",N_cases,"cases_",repeats,"sims.csv")
+    file_cumul_cases = string(dir_output,"/cumul_",N_cases,"cases.csv")
     ## Per-day distance to observations
-    file_dist_pw = string(dir_output,"/dist_pw_",N_cases,"cases_",repeats,"sims.csv")
+    file_dist_pw = string(dir_output,"/dist_pw_",N_cases,"cases.csv")
     ## Open file                
     open(file_cumul_cases, "w")
     open(file_cumul_cases, "a") do io
@@ -86,11 +84,11 @@ if SaveResults == "Yes"
     open(file_dist_pw, "w")
 
     ## Time and epi size
-    file_Cases_EpiSize_Time = string(dir_output,"/Cases_EpiSize_Time_",N_cases,"cases_",repeats,"sims.csv")
+    file_Cases_EpiSize_Time = string(dir_output,"/Cases_EpiSize_Time_",N_cases,"cases.csv")
     ## Simulated epidemics
-    file_all_sim_inf = string(dir_output,"/SimInf_",N_cases,"cases_",repeats,"sims.csv")
+    file_all_sim_inf = string(dir_output,"/SimInf_",N_cases,"cases.csv")
     ## Secondary infections (stats of means)
-    file_SecInf_stats = string(dir_output,"/SecInf_stats_",N_cases,"cases_",repeats,"sims.csv")
+    file_SecInf_stats = string(dir_output,"/SecInf_stats_",N_cases,"cases.csv")
 end
 
 ##
