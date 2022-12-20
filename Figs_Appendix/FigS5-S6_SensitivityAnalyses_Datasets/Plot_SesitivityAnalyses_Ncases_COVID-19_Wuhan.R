@@ -65,15 +65,24 @@ for (Ncases in Ncases_var){
     Ncases_str=as.character(Ncases)
     
     # Read data
-    SA_Ncases=read.csv(paste0("Time distribution for N cases/RunSims_to_Ncases/Output/COVID-19_Wuhan/Cond_Cumul_Delay/MinTime_N_EpiSize_",Ncases_str,"cases_5000sims.csv")) %>%
-        as_tibble()
-    colnames(SA_Ncases)=c("Time","Cases","EpiSize","Case1")
-    
-    if (Ncases==169 || Ncases==202){
+    if (Ncases==169){ # (Pekar et al. 2020)
+        SA_Ncases=read.csv(paste0("Figs_Appendix/FigS5-S6_SensitivityAnalyses_Datasets/Output/COVID-19_Wuhan/Cases_EpiSize_Time_",Ncases,"cases.csv")) %>%
+            as_tibble()
+        
+        Date_N = as.Date("2019-12-31") 
+    } else if (Ncases==202){# (WHO 2020)
+        SA_Ncases=read.csv(paste0("Figs_Appendix/FigS5-S6_SensitivityAnalyses_Datasets/Output/COVID-19_Wuhan/Cases_EpiSize_Time_",Ncases,"cases.csv")) %>%
+            as_tibble()
+        
         Date_N = as.Date("2019-12-31")
-    }else if (Ncases==3072){
+    }else if (Ncases==3072){ # (Pekar et al. 2020)
+        SA_Ncases=read.csv("Fig1-2_Emergence/Output/COVID-19_Wuhan/Cases_EpiSize_Time_3072cases.csv") %>% 
+            as_tibble()
+        
         Date_N = as.Date("2020-01-19")
     }
+
+    colnames(SA_Ncases)=c("Time","Cases","EpiSize","Case1")
     
     
     SA_Ncases=SA_Ncases%>%
@@ -113,43 +122,11 @@ me_Ncases = me_Ncases %>%
            Date_1sCase = Date_N-grp.median)
 
 ####
-#### 2. Plot  Distributions #####################
-####
-# p_Ncases_Dist = ggplot(SA_Ncases_long, aes(x=Date, y=..density..,fill=Ncases)) +
-#     geom_histogram(alpha=0.4,
-#                    binwidth=1, # each bar represents 1 day
-#                    position='identity') +
-#     geom_vline(data=me_Ncases, aes(xintercept=Date_1sCase, color=Ncases),
-#                linetype="dashed") +
-#     scale_fill_manual(name=TeX("Date of $N$-th case"), 
-#                       breaks=c("3072","169","174","202"),
-#                       labels=MyLabels,
-#                       values=c(ColorOne,ColorTwo,ColorThree,ColorFour)) +
-#     scale_color_manual(name=TeX("Date of $N$-th case"), 
-#                        breaks=c("3072","169","174","202"),
-#                        labels=MyLabels,
-#                        values=c(ColorOne,ColorTwo,ColorThree,ColorFour)) +
-#     scale_y_continuous(expand=c(0.01,0)) +
-#     scale_x_date(name="\nEmergence date (2019)",
-#                  breaks=MyBreaks,
-#                  date_labels="%b %d") +
-#     labs(title="",
-#          x ="Days",
-#          y=" ") +
-#     theme_classic() +
-#     theme(axis.title.x=element_text(vjust=+2),
-#           axis.text.x=element_text(angle=90, hjust=-0.5, vjust=0.5)) +
-#     NULL
-# 
-# p_Ncases_Dist
-
-####
 #### 2. Plot  Violins  #####################
 ####
-p_Ncases_Violins = ggplot(data=SA_Ncases_long, 
+p_Ncases = ggplot(data=SA_Ncases_long, 
                           aes(x=Date, y=Ncases, fill=Ncases,color=Ncases)) +
     geom_violin(width=0.8, size=0.2, alpha=0.3) + 
-    # geom_boxplot(width=0.25,size=0.2,alpha=0,outlier.shape=NA) +
     stat_summary(fun = "mean",
                  geom = "point",
                  shape=5, # Diamond
@@ -209,40 +186,19 @@ p_Ncases_Violins = ggplot(data=SA_Ncases_long,
           axis.ticks.y = element_blank()) +
     NULL
 
-p_Ncases_Violins
+p_Ncases
 
-####
-#### 3. Display results ####################
-####
-
-# ggsave(paste0("Time distribution for N cases/RunSims_to_Ncases/Output/",EpiContext,"/SensitivityAnalyses/N_cases.pdf"),
-#        plot=p_Ncases_Dist, height=6, width=12, units=c("cm"), dpi=600)
-# 
-# ggsave(paste0("Communicating results/Articles/Figures/SupplementaryFigures/SensitivityAnalyses_N_cases_",EpiContext,".pdf"),
-#        plot=p_Ncases_Dist, height=10, width=16, units=c("cm"))
-
-
-ggsave(paste0("Time distribution for N cases/RunSims_to_Ncases/Output/",EpiContext,"/SensitivityAnalyses/N_cases.pdf"),
-       plot=p_Ncases_Violins, height=20, width=10, units=c("cm"), dpi=600)
-
-ggsave(paste0("Communicating results/Articles/Figures/SupplementaryFigures/SensitivityAnalyses_N_cases_",EpiContext,".pdf"),
-       plot=p_Ncases_Violins, height=10, width=12, units=c("cm"))
-
-Results_SA 
+ggsave("Figs_Appendix/FigS5-S6_SensitivityAnalyses_Datasets/Output/COVID-19_Wuhan.pdf",
+       plot=p_Ncases, height=10, width=12, units=c("cm"))
 
 ####
 #### 4.Build TeX table #####################
 ####
-library(xtable)
-
 Table_Results_SA = Results_SA %>%
     select(-Mean) %>%
     mutate(EarliestDate = format(Earliest, "%b %d, %Y"),
            Results = paste0(format(Median, "%b %d")," (",format(P025, "%b %d"),'--',format(P975, "%b %d"),")", format(P975, " %Y"))) %>%
     select(-c(Median,Earliest,P025,P975))
 Table_Results_SA
-
-print(xtable(Table_Results_SA, type = "latex"), include.rownames=FALSE,
-      file = "Time distribution for N cases/Display_and_plot_results/SensitivityAnalyses/Table_EmergenceDate_SA_Ncases.tex")
 
 

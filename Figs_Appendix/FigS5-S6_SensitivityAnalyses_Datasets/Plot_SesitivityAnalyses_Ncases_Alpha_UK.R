@@ -64,15 +64,19 @@ for (Ncases in Ncases_var){
     Ncases_str=as.character(Ncases)
     
     # Read data
-    SA_Ncases=read.csv(paste0("Figs_Appendix/FigS5-S6_SensitivityAnalyses_Datasets/Cases_EpiSize_Time_",Ncases_str,"cases.csv")) %>%
-        as_tibble()
-    colnames(SA_Ncases)=c("Time","Cases","EpiSize","Case1")
-    
     if (Ncases==1){
+        SA_Ncases=read.csv("Figs_Appendix/FigS5-S6_SensitivityAnalyses_Datasets/Output/Alpha_UK/Cases_EpiSize_Time_1cases.csv") %>%
+            as_tibble()
+        
         Date_N = as.Date("2020-09-20")
     }else if (Ncases==406){
+        SA_Ncases=read.csv("Fig1-2_Emergence/Output/Alpha_UK/Cases_EpiSize_Time_406cases.csv") %>% 
+            as_tibble()
+        
         Date_N = as.Date("2020-11-11")
     }
+    
+    colnames(SA_Ncases)=c("Time","Cases","EpiSize","Case1")
     
     
     SA_Ncases=SA_Ncases%>%
@@ -109,14 +113,14 @@ SA_Ncases_long = SA_Ncases_long %>%
 ##
 ## Czuppon et al. 2021
 ##
-Res_Czuppon2021 = read.csv(file="Data/EmergenceDates/Czuppon2021/size_time_nb_R19.txt") %>% 
+Res_Czuppon2021 = read.csv(file="Data/Emergence_Czuppon2021updated.csv") %>% 
     as_tibble()
-colnames(Res_Czuppon2021) = c("Time","Size")
+Res_Czuppon2021$Date = as.Date(Res_Czuppon2021$Date)
 Date_N = as.Date("2020-09-20")
 Ncases = 1
 
 Res_Czuppon2021 = Res_Czuppon2021 %>%
-    mutate(Date=Date_N-Time,
+    mutate(Time=as.numeric(Date_N-Date),
            Ncases=1,
            Study="Czuppon et al. 2021 (updated, N=1)") %>% 
     select(Date,Time,Ncases,Study)
@@ -140,7 +144,7 @@ SA_Ncases_long
 ####
 #### 2. Plot  Violins  #####################
 ####
-p_Ncases_Violins = ggplot(data=SA_Ncases_long, 
+p_Ncases = ggplot(data=SA_Ncases_long, 
                           aes(x=Date, y=Study, fill=Study,color=Study)) +
     geom_violin(width=0.8, size=0.2, alpha=0.3) + 
     stat_summary(fun = "mean",
@@ -195,34 +199,18 @@ p_Ncases_Violins = ggplot(data=SA_Ncases_long,
           axis.ticks.y = element_blank()) +
     NULL
 
-p_Ncases_Violins
+p_Ncases
+
+ggsave("Figs_Appendix/FigS5-S6_SensitivityAnalyses_Datasets/Output/Alpha_UK/FigS5-SensitivityAnalyses_Datasets_Alpha_UK.pdf",
+       plot=p_Ncases, height=10, width=12, units=c("cm"))
 
 ####
-#### 3. Display results ####################
+#### 4.Build Results table #####################
 ####
-
-
-ggsave(paste0("Time distribution for N cases/RunSims_to_Ncases/Output/",EpiContext,"/SensitivityAnalyses/N_cases_UK.pdf"),
-       plot=p_Ncases_Violins, height=20, width=10, units=c("cm"), dpi=600)
-
-ggsave(paste0("Communicating results/Articles/Figures/SupplementaryFigures/SensitivityAnalyses_N_cases_",EpiContext,".pdf"),
-       plot=p_Ncases_Violins, height=10, width=12, units=c("cm"))
-
-Results_SA 
-
-####
-#### 4.Build TeX table #####################
-####
-library(xtable)
-
 Table_Results_SA = Results_SA %>%
     select(-Mean) %>%
     mutate(EarliestDate = format(Earliest, "%b %d, %Y"),
            Results = paste0(format(Median, "%b %d")," (",format(P025, "%b %d"),'--',format(P975, "%b %d"),")", format(P975, " %Y"))) %>%
     select(-c(Median,Ncases,Earliest,P025,P975))
 Table_Results_SA
-
-print(xtable(Table_Results_SA, type = "latex"), include.rownames=FALSE,
-      file = "Time distribution for N cases/Display_and_plot_results/SensitivityAnalyses/Table_EmergenceDate_SA_Ncases_UK.tex")
-
 
