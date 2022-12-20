@@ -10,7 +10,7 @@
 
 ## Estimates of emergence
 - `Emergence_Czuppon2021updated.csv` 
-  <br> Emergence estimates from (Czuppon et al., 2021), from running the simulations using R=1.9 and a Negative Binomial distribution for the generation of secondary cases.
+  <br> Emergence estimates from (Czuppon et al., 2021), from running the simulations using R=1.9 and a negative binomial distribution for the generation of secondary cases.
 
 - `Emergence_Hill2022.csv` 
   <br> tMRCA estimates from (Hill et al., 2021); personal communication.
