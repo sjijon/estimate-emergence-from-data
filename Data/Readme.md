@@ -3,7 +3,7 @@
 ## Case data
 
 - `CaseData_Alpha_UK.csv`
-  <br> Data of sequenced samples retrieved from Gisaid. Samples with collection date up to November 11th, 2020, submitted by December 31, 2020.
+  <br> Data of sequenced samples retrieved from GISAID. Samples with collection date up to November 11th, 2020, submitted by December 31, 2020.
 
 - `CaseData_COVID-19_Wuhan.csv`
   <br> Data of early COVID-19 cases in Wuhan from (Pekar et al., 2022); personal communication.
