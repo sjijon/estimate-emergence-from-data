@@ -82,8 +82,8 @@ Estims = [  "Median"    round(quantile(Cases_EpiSize_Time[:,1], 0.50),digits=2);
 
 println("\nNumber of days between first infection and the time of occurrence of $N_cases cases\n")
             
-## Median, IQR
-println("\tMedian: $(Estims[1,2]) (IQR: $(Estims[2,2])-$(Estims[3,2])),")
+## Median, IqR
+println("\tMedian: $(Estims[1,2]) (IqR: $(Estims[2,2])-$(Estims[3,2])),")
 ## date (median):
 ## assuming Date_N is the date where the N-th case ocurred, 
 ## we go back in time using the distribution of the number of days
