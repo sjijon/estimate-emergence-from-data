@@ -15,7 +15,7 @@ Code to reproduce Figs 1 and 2 of the main text.
     - Epidemic curve from the case data
     - Violin plots for the estimates of the emergence date
     - Violin plots for the results from previous studies: 
-        - <strong>Alpha variant in the UK:</strong> We compare our results to i) an updated version of the results on emergence presented in (Czuppon et al., 2021), by setting R=1.9 (as in Hill et al., instead of 2.5) and using a negative-binomial distribution for the secondary infections (instead of Poisson) and ii) the tMRCA estimated by (Hill et al., 2021; personal communication).
+        - <strong>Alpha variant in the UK:</strong> We compare our results to i) an updated version of the results on emergence presented in (Czuppon et al., 2021), by setting R=1.9 (as in Hill et al., 2021; instead of 1.5) and using a negative-binomial distribution for the secondary infections (instead of Poisson) and ii) the tMRCA estimated by (Hill et al., 2021; personal communication).
         - <strong>COVID-19 cases in Wuhan:</strong> We compare our results to the estimates of emergence presented in (Pekar et al., 2022; personal communication)
 
 
