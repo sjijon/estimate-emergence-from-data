@@ -123,7 +123,7 @@ Results_Alpha = Results_Alpha %>%
     select(Date,Study)
 
 ## IqR
-Results_UK_IqR = Res_Jijon2022_Alpha[Res_Jijon2022_Alpha$Date>=quantile(Res_Jijon2022_Alpha$Date,0.025,type=1) & Res_Jijon2022_Alpha$Date<=quantile(Res_Jijon2022_Alpha$Date,0.975,type=1),] 
+Results_UK_IqR = Results_Alpha[Results_Alpha$Date>=quantile(Results_Alpha$Date,0.025,type=1) & Results_Alpha$Date<=quantile(Results_Alpha$Date,0.975,type=1),] 
 
 
 AllEstim = rbind(AllEstim, 
@@ -334,19 +334,22 @@ epi_wu = ggplot(data=Data_Wuhan,
 ##
 Date_N = as.Date("2020-01-19")
 
-Results_Wuhan=read.csv(file="Fig1-2_Emergence/Output/COVID-19_Wuhan/Cases_EpiSize_Time_3072cases.csv") %>% 
+Results_COVID=read.csv(file="Fig1-2_Emergence/Output/COVID-19_Wuhan/Cases_EpiSize_Time_3072cases.csv") %>% 
     as_tibble() %>%
     mutate(Date=as.Date(Date_N-MinTime),
            Study=as.factor("Estimates")) %>%
     select(Date,Study)
 
+## IqR
+Results_COVID_IqR = Results_COVID[Results_COVID$Date>=quantile(Results_COVID$Date,0.025,type=1) & Results_COVID$Date<=quantile(Results_COVID$Date,0.975,type=1),] 
+
 ## Save all estimates
 AllEstim = tibble(EpiContext = "COVID-19_Wuhan",
                   Study = "Jijon et al. (2022)", 
-                  Median = median(Results_Wuhan$Date),
-                  P025 = quantile(Results_Wuhan$Date,0.025,type=1),
-                  P975 = quantile(Results_Wuhan$Date,0.975,type=1),
-                  Earliest = sort(Results_Wuhan$Date)[1])
+                  Median = median(Results_COVID$Date),
+                  P025 = quantile(Results_COVID$Date,0.025,type=1),
+                  P975 = quantile(Results_COVID$Date,0.975,type=1),
+                  Earliest = sort(Results_COVID$Date)[1])
 
 ## Pekar et al 2022
 Results_Pekar2022 = read.csv(file="Data/Emergence_Pekar2022.csv") %>%
@@ -367,7 +370,7 @@ AllEstim = rbind(AllEstim,
 ##
 ## Plot Estimates
 ##
-Estimates_WU = rbind(Results_Wuhan,Results_Pekar2022)
+Estimates_WU = rbind(Results_COVID,Results_Pekar2022)
 
 estim_wu = ggplot(data=Estimates_WU,
                   aes(x=Date,y=Study,fill=Study,color=Study)) +
@@ -381,10 +384,10 @@ estim_wu = ggplot(data=Estimates_WU,
                  shape=3,
                  size=3) +
     ## Add IqR
-    geom_segment(x=min(Results_Wuhan_IqR$Date), xend=min(Results_Wuhan_IqR$Date),
+    geom_segment(x=min(Results_COVID_IqR$Date), xend=min(Results_COVID_IqR$Date),
                  y=1.7,yend=2.3,
                  size=0.2, color=MyBlue) + 
-    geom_segment(x=max(Results_Wuhan_IqR$Date), xend=max(Results_Wuhan_IqR$Date),
+    geom_segment(x=max(Results_COVID_IqR$Date), xend=max(Results_COVID_IqR$Date),
                  y=1.7,yend=2.3,
                  size=0.2, color=MyBlue) + 
     ## Annotate estimates
