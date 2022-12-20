@@ -14,9 +14,9 @@ using StatsBase, Distributions, Random
 using Dates
 
 ## Load user functions and other setup scripts
-include("../Processes/InfectionProcess.jl")
-include("../Processes/DetectionProcess.jl")
-include("../Processes/DefineStructs.jl")
+include("../../Routines/InfectionProcess.jl")
+include("../../Routines/DetectionProcess.jl")
+include("../../Routines/DefineStructs.jl")
 
 ## Display new run in the REPL
 println("\n\n.................NEW RUN.................\n")
@@ -27,14 +27,12 @@ println("\n\n.................NEW RUN.................\n")
 ##
 ## Epidemiological context
 ##
-# EpiContext = "Alpha_UK"
-EpiContext = "COVID-19_Wuhan"
+EpiContext = "Alpha_UK"
+# EpiContext = "COVID-19_Wuhan"
 
 ## Number of repetitions
-repeats = 5000
-# repeats = 1000
-# repeats = 10
-# repeats = 1
+# repeats = 5000
+repeats = 10
 
 ## Select wether or not to save results
 SaveResults = "Yes";
@@ -45,7 +43,7 @@ SaveResults = "Yes";
 ##
 
 ## Read parameters for chosen epi context
-include(string("../SetParameters_EpiContext/Params_",EpiContext,".jl"))
+include(string("SetParams_Supplement/Params_",EpiContext,".jl"))
 println("\nEpidemiological context: $EpiContext")
 println("(N=$N_cases cases reported by $(Date(Date_N)))\n")
 
@@ -71,7 +69,7 @@ length_inf_vec = trunc(Int,max_t_infect/dt) # final vector length
 ##
 if SaveResults == "Yes"
     ## Create path
-    dir_output = string("Fig1-2_Emergence/Output/",EpiContext)
+    dir_output = string("Figs_Appendix/FigS5-S6_SensitivityAnalyses_Datasets/Output/",EpiContext)
     mkpath(dir_output)
 
     ## Per-day cumulative number of cases (per SimEpi)
@@ -238,8 +236,3 @@ if SaveResults == "Yes"
     writedlm(file_SecInf_stats, [["Mean" "Q025" "Q50" "Q975"];SecInf_stats], ',')
     writedlm(file_all_sim_inf, SIMS, ',')
 end
-
-##
-## Display results
-##
-include("../Processes/DisplayResults.jl")
