@@ -7,4 +7,4 @@ Files reading the data files and defining all the context-specific parameters (e
 We apply our model to two epidemiological contexts:
 
 - `Params_Alpha_UK` the Alpha variant in the United Kingdom (UK).
-- `Parans_COVID-19_Wuhan` the early COVID-19 cases in Wuhan.
+- `Params_COVID-19_Wuhan` the early COVID-19 cases in Wuhan.
