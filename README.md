@@ -20,15 +20,15 @@ While the first infection by an emerging disease is often unknown, information o
 
 ## Contents
 
-- `Data` contains the files containing the time series of the early cases we use to calibrate the model for different epidemiological contexts, as well as the emergence or tMRCA estimates from previously published studies.
+- `Data/` contains the files containing the time series of the early cases we use to calibrate the model for different epidemiological contexts, as well as the emergence or tMRCA estimates from previously published studies.
 
-- `Processes` contains the functions used repeatedly in each application.
+- `Routines/` contains the functions used repeatedly in each application.
 
-- `SetParameters_EpiContext` contains the parameterizations for each application of the model
+- `SetParameters_EpiContext/` contains the parameterizations for each application of the model
 
-- `Fig1-2_Emergence` and `Fig3_Sensitivity Analyses` contain the codes to reproduce the results (`.jl`) and figures (`.R`) presented in the main text. See more details in the `Readme.md` files contained in each folder. 
+- `Fig1-2_Emergence/` and `Fig3_Sensitivity Analyses/` contain the codes to reproduce the results (`.jl`) and figures (`.R`) presented in the main text. See more details in the `Readme.md` files contained in each folder. 
 
-- `Fig4_ModelDiagram` plots a simplified diagram of the model (Ti<emph>k</emph>Z, `.tex`).
+- `Fig4_ModelDiagram/` plots a simplified diagram of the model (Ti<emph>k</emph>Z, `.tex`).
 
 ## Implementation details
 
