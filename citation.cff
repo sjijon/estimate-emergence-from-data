@@ -13,7 +13,7 @@ authors:
 - family-names: "Débarre"
   given-names: "Florence"
   orcid: "https://orcid.org/0000-0003-2497-833X"
-title: "Estimating the date of emergence of an epidemic outbreak from detection data: Applications to COVID-19"
+title: "Using early detection data to estimate the date of emergence of an epidemic outbreak"
 # doi: 
 date-released: 2022-12-31
 url: "https://github.com/sjijon/estimate-emergence-from-data"

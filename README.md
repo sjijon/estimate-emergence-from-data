@@ -1,7 +1,7 @@
 # Estimate emergence from data
 Code for reproducing the results from the preprint: 
 
-<strong>Estimating the date of emergence of an epidemic outbreak from detection data: Applications to COVID-19</strong>
+<strong>Using early detection data to estimate the date of emergence of an epidemic outbreak</strong>
 
 Sofía Jijón<sup>1</sup>, Peter Czuppon<sup>2</sup>, François Blanquart<sup>3</sup> and Florence Débarre<sup>4</sup>
 
