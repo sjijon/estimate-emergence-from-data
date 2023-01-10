@@ -48,7 +48,7 @@ println("\nEpidemiological context: $EpiContext")
 println("(N=$N_cases cases reported by $(Date(Date_N)))\n")
 
 ## Set tolerances
-# length(Simulated cases) >= tol_delay.8*length(Observed cases)
+# length(Simulated cases) >= tol_delay*length(Observed cases)
 tol_delay = 0.9
 # abs(Difference in daily cases) <= tol_epi
 tol_epi = 0.3   
