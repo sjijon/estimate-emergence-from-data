@@ -21,6 +21,8 @@ While the first infection by an emerging disease is often unknown, information o
 
 ## Contents
 
+- `ABC_Simulations/` contains the files containing the time series of the early cases to estimate the first infection in the COVID-19 example. 
+
 - `Data/` contains the files containing the time series of the early cases we use to calibrate the model for different epidemiological contexts, as well as the emergence or tMRCA estimates from previously published studies.
 
 - `Routines/` contains the functions used repeatedly in each application.
@@ -33,7 +35,7 @@ While the first infection by an emerging disease is often unknown, information o
 
 ## Implementation details
 
-Simulations are built in `Julia` version 1.8.0. 
+Simulations are built in `Julia` version 1.8.0. Simulations for the Approximate Bayesian Computation are built in `C++` version 17. 
 
 Figures are built in `R` version 4.1.2, using the `ggplot2` package version 3.3.
 
