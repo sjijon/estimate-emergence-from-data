@@ -2,6 +2,7 @@
 # FILES
 #
 Output/
+Days_*
 .DS_Store
 
 #
@@ -39,3 +40,8 @@ docs/site/
 # environment.
 Manifest.toml
 .Rproj.user
+
+#
+# VSCODE
+#
+.vscode
