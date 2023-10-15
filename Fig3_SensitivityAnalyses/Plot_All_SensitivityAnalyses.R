@@ -42,6 +42,7 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
         p_detect=0.0105
         R0=1.9
         kappa=0.57
+        theta_tau=12
         tol_epi=0.3
         tol_delay=0.9
         
@@ -49,7 +50,8 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
         Pdetect_var=c(0.005,0.0105,0.025) # Baseline: 0.0105
         R0_var=c(1.7,1.9,2.1)             # Baseline: 1.9
         kappa_var=c(0.35,0.57,0.75)       # Baseline: 0.57
-        tol_epi_var=c(0.3,0.5)        # Baseline: 0.3
+        theta_tau_var=c(7,12,15)          # Baseline: 12
+        tol_epi_var=c(0.3,0.5)            # Baseline: 0.3
         tol_delay_var=c(0.8,0.9,1.0)      # Baseline: 0.9
         
         MyBreaks= c(seq(as.Date("2020-04-07"),as.Date("2020-04-28"),by="7 days"),
@@ -68,7 +70,7 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
         y_lims=c(0,0.07)
         Ytitle="Alpha"
         MyXLabel="\nDate of emergence (2020)"
-        MyPanelLabels=c(" ","A","C","E","G","I")
+        MyPanelLabels=c(" ","A","C","E","G","I","K")
         StatPos = as.Date(c("2020-05-10","2020-05-14","2020-06-05","2020-06-09"))
     }else if (EpiContext == "COVID-19_Wuhan"){
         # Date of N-th case
@@ -78,6 +80,7 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
         p_detect=0.15
         R0=2.5
         kappa = 0.1
+        theta_tau=6.25
         tol_epi=0.3
         tol_delay=0.9
         
@@ -85,6 +88,7 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
         Pdetect_var=c(0.10,0.15,0.25)
         R0_var=c(2.0,2.5,3.5)
         kappa_var=c(0.05,0.1,0.25)
+        theta_tau_var=c(2.8,6.25,11.6)    # Baseline: 6.25
         tol_epi_var=c(0.1,0.3,0.5)        # Baseline: 0.3
         tol_delay_var=c(0.8,0.9,1.0)      # Baseline: 0.9
         
@@ -106,7 +110,7 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
         y_lims=c(0,0.08)
         Ytitle="COVID-19"
         MyXLabel="\nDate of emergence (2019)"
-        MyPanelLabels=c(" ","B","D","F","H","J")
+        MyPanelLabels=c(" ","B","D","F","H","J","L")
         StatPos = as.Date(c("2019-10-10","2019-10-14","2019-11-05","2019-11-09"))
     }
     
@@ -116,9 +120,11 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
     if(EpiContext == "Alpha_UK"){
         p_detect=0.0105
         kappa=0.57
+        theta_tau=12
     }else if (EpiContext == "COVID-19_Wuhan"){
         kappa=0.10
         p_detect=0.15
+        theta_tau=6.25
     }
     
     SA_R0_long=NULL
@@ -148,6 +154,7 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
                                   R0 = R0,
                                   kappa = kappa,
                                   p_detect=p_detect,
+                                  theta_tau=theta_tau,
                                   tol_epi = tol_epi,
                                   tol_delay=tol_delay,
                                   Mean = mean(SA_R0$Date),
@@ -203,9 +210,11 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
     if(EpiContext == "COVID-19_Wuhan"){
         p_detect=0.15
         R0=2.5
+        theta_tau=6.25
     }else if (EpiContext == "Alpha_UK"){
         p_detect=0.0105
         R0=1.9
+        theta_tau=12
     }
 
     SA_kappa_long=NULL
@@ -232,6 +241,7 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
                                   R0 = R0,
                                   kappa = kappa,
                                   p_detect=p_detect,
+                                  theta_tau=theta_tau,
                                   tol_epi = tol_epi,
                                   tol_delay=tol_delay,
                                   Mean = mean(SA_kappa$Date),
@@ -291,9 +301,11 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
     if(EpiContext == "COVID-19_Wuhan"){
         R0=2.5
         kappa = 0.1
+        theta_tau=6.25
     }else if (EpiContext == "Alpha_UK"){
         R0=1.9
         kappa=0.57
+        theta_tau=12
     }
 
     SA_p_detect_long=NULL
@@ -324,6 +336,7 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
                                   R0 = R0,
                                   kappa = kappa,
                                   p_detect=p_detect,
+                                  theta_tau=theta_tau,
                                   tol_epi = tol_epi,
                                   tol_delay=tol_delay,
                                   Mean = mean(SA_p_detect$Date),
@@ -377,16 +390,114 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
     # print(p_pdetect)
 
     ####
-    #### 4. Varying tol_epi ################################################################
+    #### 4. Varying theta_tau ################################################################
+    ####
+    
+    if(EpiContext == "COVID-19_Wuhan"){
+      R0=2.5
+      kappa = 0.1
+      p_detect=0.15
+    }else if (EpiContext == "Alpha_UK"){
+      R0=1.9
+      kappa=0.57
+      p_detect=0.0105
+    }
+    
+    SA_theta_tau_long=NULL
+    
+    for (theta_tau in theta_tau_var){
+      # Strings
+      R0_str=as.character(10*R0)
+      kappa_str=as.character(100*kappa)
+      p_detect_str=as.character(str_aux*p_detect)
+      theta_tau_str=as.character(100*theta_tau)
+      
+      # Read data
+      SA_theta_tau=read.csv(paste0("Fig3_SensitivityAnalyses/Output/",EpiContext,"/Varying_theta_tau/Cases_EpiSize_Time_R0_",R0_str,"_kappa_0",kappa_str,"_p_detect_0",p_detect_str,"_theta_tau",theta_tau_str,".csv"),
+                             header=FALSE)
+      colnames(SA_theta_tau)=c("Time","Cases","EpiSize","Case1")
+      
+      SA_theta_tau=SA_theta_tau%>%
+        mutate(TimeToDetect=theta_tau,
+               EpiContext=EpiContext,
+               Date=Date_N-Time) %>%
+        as_tibble()
+      
+      # Build dataframe with all values
+      SA_theta_tau_long=rbind(SA_theta_tau_long,SA_theta_tau)
+      
+      # Build dataframe of stats
+      Results_SA = rbind(Results_SA,
+                         tibble(EpiContext=EpiContext,
+                                R0 = R0,
+                                kappa = kappa,
+                                p_detect=p_detect,
+                                theta_tau=theta_tau,
+                                tol_epi = tol_epi,
+                                tol_delay=tol_delay,
+                                Mean = mean(SA_theta_tau$Date),
+                                Median = median(SA_theta_tau$Date),
+                                P025 = quantile(SA_theta_tau$Date,0.025,type=1)[[1]],
+                                P975 = quantile(SA_theta_tau$Date,0.975,type=1)[[1]]))
+      
+    }
+    
+    SA_theta_tau_long$TimeToDetect=as_factor(SA_theta_tau_long$TimeToDetect)
+    
+    ## Mean time by theta_tau
+    mu_theta_tau <- ddply(SA_theta_tau_long, "TimeToDetect", summarise, grp.mean=mean(Time))
+    me_theta_tau <- ddply(SA_theta_tau_long, "TimeToDetect", summarise, grp.median=median(Time))
+    
+    
+    #### Plot
+    p_theta_tau = ggplot(data=SA_theta_tau_long, 
+                       aes(x=Date, y=TimeToDetect, fill=TimeToDetect,color=TimeToDetect)) +
+      geom_violin(width=0.6, size=0.2, alpha=0.3)  + 
+      # geom_boxplot(width=0.25,size=0.2,alpha=0,outlier.shape=NA) +
+      stat_summary(fun = "mean",
+                   geom = "point",
+                   shape=5, # Diamond
+                   size=3) +
+      stat_summary(fun = "median",
+                   geom = "point",
+                   shape=3, # Cross
+                   size=3) +
+      ## Add stats to legend
+      # annotate("point", shape=5, x=as.Date("2020-06-02"), y=2.4,size=3) +
+      # annotate("text",x=as.Date("2020-06-04"), y=2.4,label="Mean",hjust=0,size=2.75) +
+      # annotate("point", shape=3, x=as.Date("2020-06-02"), y=2.2,size=3) +
+      # annotate("text",x=as.Date("2020-06-04"), y=2.2,label="Median",hjust=0,size=2.75) +
+      ## Axis and Labels
+      scale_fill_manual(name=TeX("$\\theta_\\tau$"), breaks=as.character(rev(theta_tau_var)),values=c(ColorTwo,ColorOne,ColorThree)) +
+      scale_color_manual(name=TeX("$\\theta_\\tau$"), breaks=as.character(rev(theta_tau_var)),values=c(ColorTwo,ColorOne,ColorThree)) +
+      scale_y_discrete(name="Distributions",
+                       label=c("","",""),
+                       expand=c(0,0.7)) +
+      scale_x_date(name="",
+                   breaks=MyBreaks,
+                   date_labels="%b %d") +
+      ggtitle("") +
+      theme_classic() +
+      theme(legend.position=c(0.12,0.8),
+            plot.title=element_text(size=14), # face="bold"
+            axis.text.x=element_text(angle=90, hjust=-0.5, vjust=0.5)) +
+      NULL
+    
+    # print(p_theta_tau)
+    
+    ####
+    #### 5. Varying tol_epi ################################################################
     ####
     if(EpiContext == "Alpha_UK"){
         R0=1.9
         kappa=0.57
         p_detect=0.0105
+        theta_tau=12
     }else if (EpiContext == "COVID-19_Wuhan"){
         R0=2.5
         kappa = 0.1
         p_detect=0.15
+        theta_tau=6.25
     }
 
     tol_delay=0.9
@@ -404,6 +515,10 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
                             col_types = "ddddd")
         colnames(SA_tol_epi)=c("Time","Cases","EpiSize","Case1")
 
+         if (tol_epi==0.3){
+            SA_tol_epi = SA_tol_epi[2:5000,] # ignore first row
+        }
+        
         SA_tol_epi=SA_tol_epi%>%
             mutate(EpiContext=EpiContext,
                    Date=Date_N-Time,
@@ -422,12 +537,13 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
                                   R0 = R0,
                                   kappa = kappa,
                                   p_detect=p_detect,
+                                  theta_tau=theta_tau,
                                   tol_epi = tol_epi,
                                   tol_delay=tol_delay,
                                   Mean = mean(SA_tol_epi$Date),
                                   Median = median(SA_tol_epi$Date),
-                                  P025 = quantile(SA_tol_epi$Date,0.025,type=1)[[1]],
-                                  P975 = quantile(SA_tol_epi$Date,0.975,type=1)[[1]]))
+                                  P025 = quantile(SA_tol_epi$Date,0.025,type=1,na.rm=TRUE)[[1]],
+                                  P975 = quantile(SA_tol_epi$Date,0.975,type=1,na.rm=TRUE)[[1]]))
 
         # Build dataframe with all values
         SA_tol_epi_long=rbind(SA_tol_epi_long,SA_tol_epi)
@@ -477,7 +593,7 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
     # print(p_tol_epi)
 
     ####
-    #### 5. Varying tol_delay ################################################################
+    #### 6. Varying tol_delay ################################################################
     ####
     tol_epi=0.3
 
@@ -494,6 +610,10 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
                               col_types = "ddddd")
         colnames(SA_tol_delay)=c("Time","Cases","EpiSize","Case1")
 
+         if (tol_delay==0.9){
+            SA_tol_delay = SA_tol_delay[2:5000,] # ignore first row
+        }
+
         SA_tol_delay=SA_tol_delay %>%
             mutate(Date=Date_N-Time,
                    tol_epi=tol_epi,
@@ -506,6 +626,7 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
                                   R0 = R0,
                                   kappa = kappa,
                                   p_detect=p_detect,
+                                  theta_tau=theta_tau,
                                   tol_epi = tol_epi,
                                   tol_delay=tol_delay,
                                   Mean = mean(SA_tol_delay$Date),
@@ -568,10 +689,10 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
             fontface='bold',x=0,hjust=0) +
         theme(plot.margin = margin(0,0,0,24)) # align title
     
-    p_draft=plot_grid(title,p_R0,p_kappa,p_pdetect,p_tol_epi,p_tol_delay,
+    p_draft=plot_grid(title,p_R0,p_kappa,p_pdetect,p_theta_tau,p_tol_epi,p_tol_delay,
                       labels=MyPanelLabels,
-                      ncol=1, nrow=6,
-                      rel_heights = c(.1,1,1,1,1,1))
+                      ncol=1, nrow=7,
+                      rel_heights = c(.1,1,1,1,1,1,1))
     print(p_draft)
     
     ggsave(paste0("Fig3_SensitivityAnalyses/Output/Fig3_SensitivityAnalyses_",EpiContext,".pdf"),
