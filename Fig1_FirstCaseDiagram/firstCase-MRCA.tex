@@ -1,0 +1,158 @@
+% MRCA
+%
+% Florence Débarre
+% iEES Paris
+% October 2023
+%____________________________________________________
+\documentclass{standalone}
+
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{positioning, fit, backgrounds, calc, arrows}
+
+% FONTS
+\usepackage[adobe-utopia]{mathdesign}
+\usepackage[scaled]{helvet}
+%\renewcommand*\familydefault{\sfdefault} %% Only if the base font of the document is to be sans serif
+\usepackage[T1]{fontenc}
+
+\usepackage[active, tightpage]{preview}
+\def \prevborder {5pt}
+\setlength\PreviewBorder{\prevborder}%
+
+%____________________________________________________
+\begin{document}
+\begin{preview}
+\begin{tikzpicture}
+
+\colorlet{colExtinctA}{RawSienna}
+\colorlet{colExtinctB}{Salmon}
+\colorlet{colAliveA}{Mulberry}
+
+\tikzstyle{emptycirc} = [draw = none, circle, inner sep = 0pt, minimum width = 10pt]
+
+\foreach \i in {1, 2, ..., 15}{
+\foreach \j in {1, 2, ..., 8}{
+\node[emptycirc](n\i\j) at(\i, 0.5*\j) {};
+}
+}
+
+\tikzstyle{fullcirc} = [emptycirc, draw = black]
+
+\tikzstyle{linkcirc} = [draw, line width = 2pt]
+
+\tikzstyle{extinctA} = [fullcirc, fill = colExtinctA]
+\tikzstyle{linkEA} = [linkcirc, draw = colExtinctA]
+
+\tikzstyle{aliveA} = [fullcirc, fill = colAliveA]
+\tikzstyle{linkAA} = [linkcirc, draw = colAliveA]
+
+\tikzstyle{extinctB} = [fullcirc, fill = colExtinctB]
+\tikzstyle{linkEB} = [linkcirc, draw = colExtinctB]
+
+% Extinct, alone
+\node[emptycirc, extinctA] at(n23){};
+
+% Extinct, some descendents
+\node[extinctA] at(n17){};
+\node[extinctA] at(n27){};
+\node[extinctA] at(n37){};
+\node[extinctA] at(n38){};
+\node[extinctA] at(n48){};
+
+\draw[linkEA](n17)--(n27)--(n37) (n27)--(n38)--(n48);
+
+% First case
+\node[aliveA] at (n65) (firstCase){};
+\node[aliveA] at (n75){};
+\node[aliveA] at (n85){};
+\node[aliveA] at (n95){};
+\node[aliveA] at (n105){};
+\node[aliveA] at (n115){};
+\node[aliveA] at (n125) (MRCA){};
+\node[aliveA] at (n135){};
+\node[aliveA] at (n145){};
+\node[aliveA] at (n155){};
+\node[aliveA] at (n136){};
+\node[aliveA] at (n156){};
+\node[aliveA] at (n147){};
+\node[aliveA] at (n157){};
+\node[aliveA] at (n158){};
+\node[aliveA] at (n136){};
+\node[aliveA] at (n136){};
+\node[aliveA] at (n144){};
+\node[aliveA] at (n154){};
+\node[aliveA] at (n143){};
+\node[aliveA] at (n153){};
+\node[aliveA] at (n152){};
+\node[aliveA] at (n151){};
+
+\draw[linkAA] (n65)--(n75) -- (n85) -- (n95) -- (n105) -- (n115) -- (n125) -- (n135) -- (n145) -- (n155) (n125)--(n136)--(n147)--(n157) (n147)--(n158) (n147)--(n156) (n135)--(n144)--(n154) (n135)--(n143) (n143)--(n153) (n143)--(n152) (n143)--(n151);
+
+\node[extinctB] at (n94){};
+\node[extinctB] at (n104){};
+\node[extinctB] at (n103){};
+\draw[linkEB] (n85)--(n94)--(n104) (n94)--(n103);
+
+\node[extinctB] at (n146){};
+\draw[linkEB] (n136)--(n146);
+
+\node[extinctB] at (n134){};
+\node[extinctB] at (n142){};
+\draw[linkEB] (n125)--(n134)--(n142);
+
+% Time arrow
+\draw[->, line width = 1.5pt] (0.5, 0)--(15.35, 0) node [right] {\sf \large time};
+
+\draw[fill = white, draw = none, opacity = 0.] (0.5, 0.25) -- (15.25, 0.25) -- (15.25, 4.25) -- (0.5, 4.25) -- (0.5, 0.25){};
+%
+%%--------------------------
+%% Add other points = DATA
+%\draw[fill = white, draw = none, opacity = 0.8] (0.5, 0.25) -- (15.25, 0.25) -- (15.25, 4.25) -- (0.5, 4.25) -- (0.5, 0.25){};
+%
+%\tikzstyle{datacirc} = [fullcirc, fill = gray]
+%\tikzstyle{linkdata} = [linkcirc, draw = gray]
+%
+%\node[datacirc] at (n105){};
+%\node[datacirc] at (n135){};
+%\node[datacirc] at (n145){};
+%\node[datacirc] at (n147){};
+%\node[datacirc] at (n157){};
+%\node[datacirc] at (n158){};
+%\node[datacirc] at (n153){};
+%\node[datacirc] at (n107){};
+%\draw[linkdata] (n135) -- (n145) (n147)(n157) (n147)--(n158){};
+%%------------------------------
+
+% Add labels
+\tikzstyle{lbl} = [inner sep = 2pt, draw = none, font = \sf \large, anchor = south, align = center]
+\def \dlab {0.75}
+
+\node[lbl] at($(MRCA) + (0, \dlab)$) (MRCAlbl){Most recent common \\ancestor (MRCA)};
+\node[lbl] at($(firstCase) + (0, \dlab)$) (firstCaselbl){First infection\\in the ongoing outbreak};
+
+\tikzstyle{arrlbl} = [->, >=latex]
+\tikzstyle{timetrait} = [dashed]
+\tikzstyle{timelbl} = [lbl, anchor = north, align = center]
+
+\draw[arrlbl] (MRCAlbl)--(MRCA);
+\draw[arrlbl] (firstCaselbl)--(firstCase);
+
+\node[emptycirc] at(0, 0) (origin){};
+\node[emptycirc] at (MRCA |- origin) (tMRCA){};
+\node[emptycirc] at (firstCase |- origin) (t0){};
+
+\draw[timetrait] (MRCA) -- (tMRCA.center);
+\node[timelbl] at(tMRCA){tMRCA};
+
+\draw[timetrait] (firstCase) -- (t0.center);
+\node[timelbl] at(t0){$t_0$};
+
+\node[lbl, color = colExtinctA, anchor = center] at(n25){Unsuccessful\\spillovers};
+\node[lbl, color = colExtinctB, anchor = north] at(n93){Extinct \\sublineage};
+
+%\draw[timetrait](MRCA)--(0,0);
+
+\end{tikzpicture}
+\end{preview}
+\end{document}
