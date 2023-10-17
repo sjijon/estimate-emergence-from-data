@@ -56,8 +56,6 @@ println("\nEpidemiological context: $EpiContext")
 println("(N=$N_cases cases reported by $(Date(Date_N)))\n")
 
 ## Set tolerances
-# length(Simulated cases) >= tol_delay*length(Observed cases)
-tol_delay = 0.90
 # abs(Difference in daily cases) <= tol_epi
 tol_epi = 0.30
 
@@ -175,15 +173,12 @@ for param in VarParam
                 ##
                 ## 2.2. Selecting the simulations
                 ##
-                ## b) Conditioned by the time period
-                ## b.1.) The time period between the 1st infection and the first observed case
+                ## i) The time period between the 1st infection and the first observed case
                 global obs_num_days = Dates.value(Date_N - Date_1)
                 global sim_num_days = length(SimCases.cumul[SimCases.cumul.>0])
                 global Diff_SimInf1_ObsCas1 = Int(SimCases.d_detect[end] - obs_num_days)
-                ## b.2.) The length of the time period where cases occur
-                global Diff_NumDays = abs(obs_num_days - sim_num_days)
                 
-                ## c) The similarity with the observed cumulative number of cases
+                ## ii) The similarity with the observed cumulative number of cases
                 ## Add zeros if&where needed and align the cumulative curves at right
                 global obs_cases_cumul_ = [zeros(Int,maximum([length(SimCases.cumul),length(obs_cases_cumul)])-length(obs_cases_cumul));obs_cases_cumul]
                 global sim_cases_cumul_ = [zeros(Int,maximum([length(SimCases.cumul),length(obs_cases_cumul)])-length(SimCases.cumul));SimCases.cumul]
@@ -192,7 +187,7 @@ for param in VarParam
                 global Dist = maximum(Dist_pw)
 
                 ## Select the simulation if the selected condition is verified
-                if (Diff_SimInf1_ObsCas1>=0 &&  sim_num_days>= tol_delay*obs_num_days && Dist<(tol_epi*N_cases))
+                if (Diff_SimInf1_ObsCas1>=0 && Dist<(tol_epi*N_cases))
                 
                     # Update number of successes
                     successes += 1

@@ -32,7 +32,6 @@ EpiContext = "Alpha_UK"
 
 ## Varying parameter 
 Var_str = "Varying_tol_epi"
-# Var_str = "Varying_tol_delay"
 
 ## Number of repetitions
 # repeats = 5000
@@ -53,8 +52,6 @@ println("\nEpidemiological context: $EpiContext")
 println("(N=$N_cases cases reported by $(Date(Date_N)))\n")
 
 ## Set tolerances
-# length(Simulated cases) >= tol_delay.8*length(Observed cases)
-global tol_delay = 0.9
 # abs(Difference in daily cases) <= tol_epi
 global tol_epi = 0.3   
 
@@ -80,38 +77,24 @@ if EpiContext == "Alpha_UK"
 elseif EpiContext == "COVID-19_Wuhan"
     Var_tol_epi = [0.1 0.3 0.5]     # Baseline: 0.3
 end
-Var_tol_delay = [0.8 0.9 1.0]   # Baseline: 0.9
+VarParam = Var_tol_epi
 
-## Run for different parameters
-if Var_str == "Varying_tol_epi"
-    VarParam = Var_tol_epi
-elseif Var_str == "Varying_tol_delay"
-    VarParam = Var_tol_delay
-end
 
 for param in VarParam
     ## Set values
-    if Var_str == "Varying_tol_epi"
-        global tol_epi = param
-        tol_delay = 0.9
-    elseif Var_str == "Varying_tol_delay"
-        tol_epi = 0.3
-        global tol_delay = param
-    end
+    global tol_epi = param
 
     ## Print params values
     println("\n\ntol_epi: $tol_epi")
-    println("tol_delay: $tol_delay")
 
     if SaveResults == "Yes"
         ## Filepaths
         global tol_epi_str = string(Int(10*tol_epi))
-        global tol_delay_str = string(Int(10*tol_delay))
         global dir_output = string("Fig3_SensitivityAnalyses/Output/",EpiContext,"/",Var_str)
         mkpath(dir_output)
 
         ## Time to N cases
-        global file_Cases_EpiSize_Time = string(dir_output,"/Cases_EpiSize_Time_tol_epi_0",tol_epi_str,"_tol_delay_0",tol_delay_str,".csv")
+        global file_Cases_EpiSize_Time = string(dir_output,"/Cases_EpiSize_Time_tol_epi_0",tol_epi_str,".csv")
     end
     
     ## Initialization
@@ -151,15 +134,12 @@ for param in VarParam
                 ## 2.2. Selecting the simulations
                 ##
                 ## Selection conditioned to the cumulative number of cases & the length of time period (Con_Cumul_Delay)
-                ## b) Time period
-                ## b.1.) The time period between the 1st infection and the last observed case
+                ## i) The time period between the 1st infection and the last observed case
                 local obs_num_days = Dates.value(Date_N - Date_1)
                 local sim_num_days = length(SimCases.cumul[SimCases.cumul.>0])
                 local Diff_SimInf1_ObsCas1 = Int(SimCases.d_detect[end] - obs_num_days)
-                ## b.2.) The length of the time period where cases occur
-                local Diff_NumDays = abs(obs_num_days - sim_num_days)
-
-                ## c) The similarity with the observed cumulative number of cases
+                
+                ## ii) The similarity with the observed cumulative number of cases
                 ## Add zeros if&where needed and align the cumulative curves at right
                 local obs_cases_cumul_ = [zeros(Int,maximum([length(SimCases.cumul),length(obs_cases_cumul)])-length(obs_cases_cumul));obs_cases_cumul]
                 local sim_cases_cumul_ = [zeros(Int,maximum([length(SimCases.cumul),length(obs_cases_cumul)])-length(SimCases.cumul));SimCases.cumul]
@@ -168,7 +148,7 @@ for param in VarParam
                 local Dist = maximum(Dist_pw)
 
                 ## Condition
-                VerifiesCondition = (Diff_SimInf1_ObsCas1>=0 &&  sim_num_days>= tol_delay*obs_num_days && Dist<(tol_epi*N_cases))
+                VerifiesCondition = (Diff_SimInf1_ObsCas1>=0 && Dist<(tol_epi*N_cases))
 
                 ## Select the simulation if the selected condition is verified
                 if VerifiesCondition
