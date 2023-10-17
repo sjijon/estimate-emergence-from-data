@@ -130,12 +130,3 @@ println("\tMedian (95%IqR): $(round(100*(1-median(NumCases_tN./EpiSize_dK)),digi
 ##
 println("\n\tProportion of detected:")
 println("\tMedian (95%IqR): $(round(100*(median(NumCases_tN./EpiSize_dK)),digits=2)) ($(round(100*(quantile(NumCases_tN./EpiSize_dK,0.025)),digits=2))-$(round(100*(quantile(NumCases_tN./EpiSize_dK,0.975)),digits=2)))")
-
-
-##
-## Number of secondary infections
-##
-println("\nSecondary infections\n")
-## Statistics of the mean of all simulations
-## Median (95% IqR) of all means
-println("\tMedian of means: $(round(median(SecInf_stats[:,1]),digits=2)) (95%IqR: $(round(quantile(SecInf_stats[:,1],0.025),digits=2))-$(round(quantile(SecInf_stats[:,1],0.975),digits=2)))")

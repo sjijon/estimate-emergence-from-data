@@ -87,8 +87,6 @@ if SaveResults == "Yes"
     file_Cases_EpiSize_Time = string(dir_output,"/Cases_EpiSize_Time_",N_cases,"cases.csv")
     ## Simulated epidemics
     file_all_sim_inf = string(dir_output,"/SimInf_",N_cases,"cases.csv")
-    ## Secondary infections (stats of means)
-    file_SecInf_stats = string(dir_output,"/SecInf_stats_",N_cases,"cases.csv")
 end
 
 ##
@@ -102,8 +100,6 @@ successes = 0                               # successes counter
 ## Initialization of results arrays
 Cases_EpiSize_Time = Array{Int64}(undef,0,4) # Time of detection, number of cases and size of the epidemic
 SIMS = [1:max_t_infect;]                    # All simulations
-SecondaryInfec_all = Array{Int64}(undef,0,2)# All number of secondary infections
-SecInf_stats = Array{Int64}(undef,0,4)      # All number of secondary infections (stats for each SimEpi)
 
 ###
 ### Distributions
@@ -191,13 +187,6 @@ while (successes < repeats)
                 ## Save all simulated epidemics
                 global SIMS = hcat(SIMS,SimEpi.daily_infec)
                 
-                ## Save all number of secondary infections 
-                ## up to the date of the N-th case
-                global SecInf_dNthCase= SimEpi.second_infec[SimEpi.second_infec[:,1].<SimCases.d_NthCase,:]
-                local SecInf_mean = mean(SecInf_dNthCase[:,2])
-                local SecInf_IQR = quantile(SecInf_dNthCase[:,2], [0.025 0.5 0.975])
-                global SecInf_stats = vcat(SecInf_stats,[SecInf_mean SecInf_IQR])
-                
                 ## Save
                 if SaveResults == "Yes"
                     ## All cumulative cases
@@ -233,7 +222,6 @@ println("\n\nNumber of runs (run_num): $run_num\nSuccesses = $Prop_SelectedSims 
 if SaveResults == "Yes"
     ## Save
     writedlm(file_Cases_EpiSize_Time, [["MinTime" "Cases" "EpiSize" "Case1"]; Cases_EpiSize_Time], ',')
-    writedlm(file_SecInf_stats, [["Mean" "Q025" "Q50" "Q975"];SecInf_stats], ',')
     writedlm(file_all_sim_inf, SIMS, ',')
 end
 
