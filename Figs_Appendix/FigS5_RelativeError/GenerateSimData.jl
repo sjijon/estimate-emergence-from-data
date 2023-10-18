@@ -16,9 +16,6 @@ using StatsBase, Distributions, Random
 using Dates
 using CSV, DataFrames
 
-## Create and start the timer
-to = TimerOutput()
-
 ## Load user functions
 include("../../Routines/InfectionProcess.jl")
 include("../../Routines/DetectionProcess.jl")

@@ -12,11 +12,7 @@
 using DelimitedFiles
 using StatsBase, Distributions, Random
 using Dates
-using TimerOutputs
 using CSV, DataFrames
-
-## Create and start the timer
-to = TimerOutput()
 
 ## Load user functions
 include("../../Routines/InfectionProcess.jl")
@@ -77,7 +73,6 @@ println("______________________________________________\n")
 
 MinTime_N_EpiSize_All = Array{Any}(undef,0,5) # Stats per dataset
 
-@timeit to "Iterations" begin # timer
     global SelectedSims = Array{Int64}(undef,0,3)
 
     for dataset_num in 1:num_datasets
@@ -208,25 +203,16 @@ MinTime_N_EpiSize_All = Array{Any}(undef,0,5) # Stats per dataset
 
         global SelectedSims = [SelectedSims; [repeats run_num round(100*repeats/run_num,digits=2)]]
     end # for (datasets)
-end # timer (iterations)
 
 println("______________________________________________\n")
 
 ##
 ## 5. Display results and save ####################
 ##
-@timeit to "Display and save" begin # timer
-    ##
-    ## Display
-    ##
-    print_results("Retained simulations", SelectedSims[:,3]) 
-    println("______________________________________________\n")
-
-    ##
+##
+## Save
+##
+if SaveResults == "Yes"
     ## Save
-    ##
-    if SaveResults == "Yes"
-        ## Save
-        writedlm(file_MinTime_N_EpiSize_All, [["Dataset" "MinTime" "Cases" "EpiSize" "Case1"]; MinTime_N_EpiSize_All], ',')
-    end
-end     
+    writedlm(file_MinTime_N_EpiSize_All, [["Dataset" "MinTime" "Cases" "EpiSize" "Case1"]; MinTime_N_EpiSize_All], ',')
+end  
