@@ -167,6 +167,9 @@ for param in VarParam
 
         Random.seed!(run_num)             # setting the seed
         
+        ##
+        ## 2.1.1 Transmission model 
+        ##
         global SimEpi = InfectionProcess()
         
         if SimEpi.epidemic==true # Epidemic? Yes (true) or No (false)
@@ -187,6 +190,7 @@ for param in VarParam
                 ## i) The time period between the 1st infection and the first observed case
                 global obs_num_days = Dates.value(Date_N - Date_1)
                 global sim_num_days = length(SimCases.cumul[SimCases.cumul.>0])
+                
                 global Diff_SimInf1_ObsCas1 = Int(SimCases.d_detect[end] - obs_num_days)
                 
                 ## ii) The similarity with the observed cumulative number of cases
