@@ -67,7 +67,7 @@ length_inf_vec = trunc(Int,max_t_infect/dt) # final vector length
 ##
 if SaveResults == "Yes"
     ## Create path
-    dir_output = string("Fig1-2_Emergence/Output/",EpiContext)
+    dir_output = string("Fig2-3_Emergence/Output/",EpiContext)
     mkpath(dir_output)
 
     ## Per-day cumulative number of cases (per SimEpi)
