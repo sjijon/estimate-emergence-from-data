@@ -15,9 +15,7 @@ println("\n\n.............Display and plot results...............")
 ##
 println("\n\nEpidemiological context: $EpiContext") 
 
-println("delta_tol_delay=$tol_delay; delta_tol_delay=$tol_delay\n")
-
-println("R0=$R0; kappa=$kappa; p_detect=$p_detect\t\n")
+println("R0=$R0; kappa=$kappa; p_detect=$p_detect; delta_tol_epi=$tol_epi\t\n")
 
 ##
 ## 0. DATA #########################################################
