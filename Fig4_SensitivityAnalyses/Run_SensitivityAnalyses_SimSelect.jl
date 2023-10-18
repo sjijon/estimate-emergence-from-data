@@ -90,7 +90,7 @@ for param in VarParam
     if SaveResults == "Yes"
         ## Filepaths
         global tol_epi_str = string(Int(10*tol_epi))
-        global dir_output = string("Fig3_SensitivityAnalyses/Output/",EpiContext,"/",Var_str)
+        global dir_output = string("Fig4_SensitivityAnalyses/Output/",EpiContext,"/",Var_str)
         mkpath(dir_output)
 
         ## Time to N cases
