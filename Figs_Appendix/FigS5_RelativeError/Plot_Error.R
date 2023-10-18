@@ -207,7 +207,7 @@ p_error = ## Plot asistogram
     # geom_histogram(alpha=0.5, position = 'identity',binwidth = 0.1, fill=NA) +
     ## Step function
     ggplot(data=All_Estims, aes(x=RelError, color = FirstCases)) + 
-    stat_bin(aes(y=..density..),geom="step", position = 'identity',binwidth = 0.1) +
+    stat_bin(aes(y=..density..),geom="step", position = 'identity',binwidth = 0.1, origin=0) +
     scale_color_manual(values=c(ColorOne,ColorThree,ColorTwo),
                       name="Number of cases (N)",
                       breaks=c("1000","100","10"),
@@ -221,7 +221,7 @@ p_error = ## Plot asistogram
     NULL
 
 p_error = ggplot(data=All_Estims, aes(x=RelError, color = FirstCases)) + 
-    stat_bin(aes(y=..density..),geom="step", position = 'identity',binwidth = 0.1) +
+    stat_bin(aes(y=..density..),geom="step", position = 'identity',binwidth = 0.1, origin=0) +
     scale_color_manual(values=c(ColorOne,ColorThree),
                        name="Number of cases (N)",
                        breaks=c("1000","10"),
