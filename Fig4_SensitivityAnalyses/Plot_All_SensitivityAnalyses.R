@@ -27,7 +27,7 @@ ColorOne = "#00648C" # Blue
 ColorTwo = "#FFAA00" # Yellow
 ColorThree = "#A01E18" # Red
 
-Cond_Name = "Cond_Delay_Cumul"
+Cond_Name = "Cond_Cumul"
 
 Results_SA = NULL
 str_aux=10000
