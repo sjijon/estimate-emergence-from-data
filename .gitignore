@@ -4,6 +4,7 @@
 Output/
 Days_*
 .DS_Store
+simdata_*
 
 #
 # R
@@ -45,3 +46,11 @@ Manifest.toml
 # VSCODE
 #
 .vscode
+
+#
+# tex
+#
+*.aux
+*.log
+*.pdf
+*.gz
