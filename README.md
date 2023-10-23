@@ -21,17 +21,23 @@ While the first infection by an emerging disease is often unknown, information o
 
 ## Contents
 
-- `ABC_Simulations/` contains the files containing the time series of the early cases to estimate the first infection in the COVID-19 example. 
-
 - `Data/` contains the files containing the time series of the early cases we use to calibrate the model for different epidemiological contexts, as well as the emergence or tMRCA estimates from previously published studies.
 
 - `Routines/` contains the functions used repeatedly in each application.
 
 - `SetParameters_EpiContext/` contains the parameterizations for each application of the model
 
-- `Fig1-2_Emergence/` and `Fig3_Sensitivity Analyses/` contain the codes to reproduce the results (`.jl`) and figures (`.R`) presented in the main text. See more details in the `Readme.md` files contained in each folder. 
+- `Fig1_FirstCaseDiagrama` generates a diagram illustrating the notions of extinct trees, first infection of the ongoing tee and the MRCA in an epidemic outbreak.
 
-- `Fig4_ModelDiagram/` plots a simplified diagram of the model (Ti<emph>k</emph>Z, `.tex`).
+- `Fig2-3_Emergence/` contains the codes to reproduce the results (`.jl`) and figures (`.R`) presented in the main text. The subfolder `ABC_Simulations/` contains the files containing the time series of the early cases to estimate the first infection in the COVID-19 example. 
+
+- `Fig4_Sensitivity Analyses/` contains a variation of the previous scripts to run the simulation over varying values of the main parameters.
+
+- `Fig5_ModelDiagram/` plots a simplified diagram of the model (Ti<emph>k</emph>Z, `.tex`).
+
+- `Figs_Appendix/` contain scripts to reproduce the figures presented in the article's appendix
+
+See the `Readme.md` files contained in each folder for more details.
 
 ## Implementation details
 
