@@ -2,7 +2,9 @@
 # FILES
 #
 Output/
+Days_*
 .DS_Store
+simdata_*
 
 #
 # R
@@ -39,3 +41,16 @@ docs/site/
 # environment.
 Manifest.toml
 .Rproj.user
+
+#
+# VSCODE
+#
+.vscode
+
+#
+# tex
+#
+*.aux
+*.log
+*.pdf
+*.gz

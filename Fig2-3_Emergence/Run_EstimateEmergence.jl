@@ -48,8 +48,6 @@ println("\nEpidemiological context: $EpiContext")
 println("(N=$N_cases cases reported by $(Date(Date_N)))\n")
 
 ## Set tolerances
-# length(Simulated cases) >= tol_delay*length(Observed cases)
-tol_delay = 0.9
 # abs(Difference in daily cases) <= tol_epi
 tol_epi = 0.3   
 
@@ -69,7 +67,7 @@ length_inf_vec = trunc(Int,max_t_infect/dt) # final vector length
 ##
 if SaveResults == "Yes"
     ## Create path
-    dir_output = string("Fig1-2_Emergence/Output/",EpiContext)
+    dir_output = string("Fig2-3_Emergence/Output/",EpiContext)
     mkpath(dir_output)
 
     ## Per-day cumulative number of cases (per SimEpi)
@@ -87,8 +85,6 @@ if SaveResults == "Yes"
     file_Cases_EpiSize_Time = string(dir_output,"/Cases_EpiSize_Time_",N_cases,"cases.csv")
     ## Simulated epidemics
     file_all_sim_inf = string(dir_output,"/SimInf_",N_cases,"cases.csv")
-    ## Secondary infections (stats of means)
-    file_SecInf_stats = string(dir_output,"/SecInf_stats_",N_cases,"cases.csv")
 end
 
 ##
@@ -102,8 +98,6 @@ successes = 0                               # successes counter
 ## Initialization of results arrays
 Cases_EpiSize_Time = Array{Int64}(undef,0,4) # Time of detection, number of cases and size of the epidemic
 SIMS = [1:max_t_infect;]                    # All simulations
-SecondaryInfec_all = Array{Int64}(undef,0,2)# All number of secondary infections
-SecInf_stats = Array{Int64}(undef,0,4)      # All number of secondary infections (stats for each SimEpi)
 
 ###
 ### Distributions
@@ -162,13 +156,11 @@ while (successes < repeats)
             ## 2.2. Model calibration
             ##
             ## Constraints for selecting a simulation:
-            ## a) The time period between the 1st infection and the first observed case
+            ## i) The time period between the 1st infection and the first observed case
             global obs_num_days = Dates.value(Date_N - Date_1)
             global sim_num_days = length(SimCases.cumul[SimCases.cumul.>0])
             global Diff_SimInf1_ObsCas1 = Int(SimCases.d_detect[end] - obs_num_days)
-            ## b) The length of the time period where cases occur
-            global Diff_NumDays = abs(obs_num_days - sim_num_days)
-            ## c) The similarity with the observed cumulative number of cases
+            ## ii) The similarity with the observed cumulative number of cases
             ## Add zeros if&where needed and align the cumulative curves at right (N-th case)
             global obs_cases_cumul_ = [zeros(Int,maximum([length(SimCases.cumul),length(obs_cases_cumul)])-length(obs_cases_cumul));obs_cases_cumul]
             global sim_cases_cumul_ = [zeros(Int,maximum([length(SimCases.cumul),length(obs_cases_cumul)])-length(SimCases.cumul));SimCases.cumul]
@@ -177,7 +169,7 @@ while (successes < repeats)
             global Dist = maximum(Dist_pw)
 
             ## Select the simulation if all conditions are verified
-            if (Diff_SimInf1_ObsCas1>=0 &&  sim_num_days>= tol_delay*obs_num_days && Dist<(tol_epi*N_cases))
+            if (Diff_SimInf1_ObsCas1>=0 && Dist<(tol_epi*N_cases))
                 # Update number of successes
                 global successes += 1
                 
@@ -190,13 +182,6 @@ while (successes < repeats)
 
                 ## Save all simulated epidemics
                 global SIMS = hcat(SIMS,SimEpi.daily_infec)
-                
-                ## Save all number of secondary infections 
-                ## up to the date of the N-th case
-                global SecInf_dNthCase= SimEpi.second_infec[SimEpi.second_infec[:,1].<SimCases.d_NthCase,:]
-                local SecInf_mean = mean(SecInf_dNthCase[:,2])
-                local SecInf_IQR = quantile(SecInf_dNthCase[:,2], [0.025 0.5 0.975])
-                global SecInf_stats = vcat(SecInf_stats,[SecInf_mean SecInf_IQR])
                 
                 ## Save
                 if SaveResults == "Yes"
@@ -233,7 +218,6 @@ println("\n\nNumber of runs (run_num): $run_num\nSuccesses = $Prop_SelectedSims 
 if SaveResults == "Yes"
     ## Save
     writedlm(file_Cases_EpiSize_Time, [["MinTime" "Cases" "EpiSize" "Case1"]; Cases_EpiSize_Time], ',')
-    writedlm(file_SecInf_stats, [["Mean" "Q025" "Q50" "Q975"];SecInf_stats], ',')
     writedlm(file_all_sim_inf, SIMS, ',')
 end
 

@@ -37,6 +37,7 @@ EpiContext = "Alpha_UK"
 Var_str = "Varying_R0"
 # Var_str = "Varying_kappa"
 # Var_str = "Varying_pdetect"
+# Var_str = "Varying_theta_tau"
 
 ## Number of repetitions
 repeats = 5000
@@ -56,8 +57,6 @@ println("\nEpidemiological context: $EpiContext")
 println("(N=$N_cases cases reported by $(Date(Date_N)))\n")
 
 ## Set tolerances
-# length(Simulated cases) >= tol_delay*length(Observed cases)
-tol_delay = 0.90
 # abs(Difference in daily cases) <= tol_epi
 tol_epi = 0.30
 
@@ -81,10 +80,12 @@ if EpiContext == "COVID-19_Wuhan"
     Var_p_detect=[0.1,0.15,0.25]        # Baseline = 0.15
     Var_R0 = [1.5,2.0,2.5,3.5]          # Baseline = 2.5
     Var_kappa = [0.05,0.1,0.25]         # Baseline = 0.1
+    Var_theta_tau = [2.8,6.25,11.6]     # Baseline = 6.25
 elseif EpiContext == "Alpha_UK"
     Var_p_detect=[0.005,0.0105,0.025]   # Baseline = 0.0105
     Var_R0 = [1.7,1.9,2.1]              # Baseline = 1.9
     Var_kappa = [0.35,0.57,0.75]        # Baseline = 0.57
+    Var_theta_tau = [7,12,15]           # Baseline = 12
 end
 
 ## Run for different parameters
@@ -93,6 +94,8 @@ if Var_str == "Varying_R0"
 elseif Var_str == "Varying_kappa"
     VarParam = Var_kappa
 elseif Var_str == "Varying_pdetect"
+    VarParam = Var_p_detect
+elseif Var_str == "Varying_theta_tau"
     VarParam = Var_p_detect
 end
 
@@ -105,12 +108,16 @@ for param in VarParam
         global p_neg = kappa/(kappa+R0)
     elseif Var_str == "Varying_pdetect"
         global p_detect = param
+    elseif Var_str == "Varying_theta_tau"
+        global shape_detect = param
+        global SampTimeDist = Gamma(shape_detect, scale_detect)
     end
     
     ## Print params values
     println("\n\np_detect: $p_detect")
     println("R0: $R0")
     println("kappa: $kappa")
+    println("theta_tau: $shape_detect")
 
     ## Increase the minimum number of infections to reach N cases
     if EpiContext == "Alpha_UK" && p_detect<0.01
@@ -127,14 +134,16 @@ for param in VarParam
         global R0_str = string(Int(10*R0))
         global p_detect_str = string(Int(10000*p_detect))
         global kappa_str = string(Int(round(100*kappa)))
-        global dir_output = string("Fig3_SensitivityAnalyses/Output/",EpiContext,"/",Var_str)
+        global theta_str = string(Int(round(100*shape_detect)))
+
+        global dir_output = string("Fig4_SensitivityAnalyses/Output/",EpiContext,"/",Var_str)
         mkpath(dir_output)
 
         ## Cumulative cases
-        global file_cumul_cases = string(dir_output,"/CumulCases_R0_",R0_str,"_kappa",kappa_str,"_p_detect_0",p_detect_str,".csv")            
+        global file_cumul_cases = string(dir_output,"/CumulCases_R0_",R0_str,"_kappa",kappa_str,"_p_detect_0",p_detect_str,"_theta_tau",theta_tau_str,".csv")            
         open(file_cumul_cases, "w")
         ## Time to N cases
-        global file_Cases_EpiSize_Time = string(dir_output,"/Cases_EpiSize_Time_R0_",R0_str,"_kappa_0",kappa_str,"_p_detect_0",p_detect_str,".csv")
+        global file_Cases_EpiSize_Time = string(dir_output,"/Cases_EpiSize_Time_R0_",R0_str,"_kappa_0",kappa_str,"_p_detect_0",p_detect_str,"_theta_tau",theta_tau_str,".csv")
     end
 
     ## Initialization
@@ -158,6 +167,9 @@ for param in VarParam
 
         Random.seed!(run_num)             # setting the seed
         
+        ##
+        ## 2.1.1 Transmission model 
+        ##
         global SimEpi = InfectionProcess()
         
         if SimEpi.epidemic==true # Epidemic? Yes (true) or No (false)
@@ -175,15 +187,13 @@ for param in VarParam
                 ##
                 ## 2.2. Selecting the simulations
                 ##
-                ## b) Conditioned by the time period
-                ## b.1.) The time period between the 1st infection and the first observed case
+                ## i) The time period between the 1st infection and the first observed case
                 global obs_num_days = Dates.value(Date_N - Date_1)
                 global sim_num_days = length(SimCases.cumul[SimCases.cumul.>0])
-                global Diff_SimInf1_ObsCas1 = Int(SimCases.d_detect[end] - obs_num_days)
-                ## b.2.) The length of the time period where cases occur
-                global Diff_NumDays = abs(obs_num_days - sim_num_days)
                 
-                ## c) The similarity with the observed cumulative number of cases
+                global Diff_SimInf1_ObsCas1 = Int(SimCases.d_detect[end] - obs_num_days)
+                
+                ## ii) The similarity with the observed cumulative number of cases
                 ## Add zeros if&where needed and align the cumulative curves at right
                 global obs_cases_cumul_ = [zeros(Int,maximum([length(SimCases.cumul),length(obs_cases_cumul)])-length(obs_cases_cumul));obs_cases_cumul]
                 global sim_cases_cumul_ = [zeros(Int,maximum([length(SimCases.cumul),length(obs_cases_cumul)])-length(SimCases.cumul));SimCases.cumul]
@@ -192,7 +202,7 @@ for param in VarParam
                 global Dist = maximum(Dist_pw)
 
                 ## Select the simulation if the selected condition is verified
-                if (Diff_SimInf1_ObsCas1>=0 &&  sim_num_days>= tol_delay*obs_num_days && Dist<(tol_epi*N_cases))
+                if (Diff_SimInf1_ObsCas1>=0 && Dist<(tol_epi*N_cases))
                 
                     # Update number of successes
                     successes += 1

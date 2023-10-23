@@ -26,6 +26,7 @@ library(viridis) # Color the violin plot
 ## Colors
 MyBlue =	 "#00648c"
 MyGray =	 "#646464"
+MyGreen=     "#1d771d"
 MyOrange =	 "#cc5e00"
 MyViolet =	 "#843fe5"
 
@@ -114,7 +115,7 @@ epi_uk = ggplot(data=Data_UK,
 ##
 ## Our estimates
 ##
-Results_Alpha=read.csv(file="Fig1-2_Emergence/Output/Alpha_UK/Cases_EpiSize_Time_406cases.csv") %>% 
+Results_Alpha=read.csv(file="Fig2-3_Emergence/Output/Alpha_UK/Cases_EpiSize_Time_406cases.csv") %>% 
     as_tibble()
 
 Results_Alpha = Results_Alpha %>%
@@ -133,6 +134,45 @@ AllEstim = rbind(AllEstim,
                         P025 = quantile(Results_Alpha$Date,0.025,type=1),
                         P975 = quantile(Results_Alpha$Date,0.975,type=1),
                         Earliest = sort(Results_Alpha$Date)[1]))
+
+##
+## ABC results
+##
+dates_ABC = seq(as.Date("2019-12-10"),as.Date("2019-09-01"),by ="-1 day") # Set dates
+
+Results_ABC = read.csv(file="Fig2-3_Emergence/ABC_Simulations/ABCresults.csv",,head=FALSE) %>% # Read results
+    as_tibble() %>%
+    mutate(Date = dates_ABC,
+           Freq = V1 * 10000,
+           Study=as.factor("ABC estimates"))  %>%
+    select(-V1)
+# Results_ABC
+
+# Expand Results_ABC frequencies
+aux = matrix(nrow=cumsum(Results_ABC$Freq)[length(cumsum(Results_ABC$Freq))],ncol=2)
+
+j = 1
+for (i in 1:length(Results_ABC$Date)) {
+    while (j <= cumsum(Results_ABC$Freq[1:i])[i]){
+        aux[j,1] = as.character(Results_ABC$Date[i])
+        aux[j,2] = "ABC estimates"
+        j = j + 1
+    }
+}
+Res_ABC <- as_tibble(data.frame(Date=as.Date(aux[,1]),Study = as.factor(aux[,2])))
+
+## IqR
+IqR_ABC = Res_ABC[Res_ABC$Date>=quantile(Res_ABC$Date,0.025,type=1) & Res_ABC$Date<=quantile(Res_ABC$Date,0.975,type=1),] 
+
+
+AllEstim = rbind(AllEstim, 
+                 tibble(EpiContext = "COVID-19_Wuhan",
+                        Study = "ABC estimates", 
+                        Median = median(Res_ABC$Date),
+                        P025 = quantile(Res_ABC$Date,0.025,type=1),
+                        P975 = quantile(Res_ABC$Date,0.975,type=1),
+                        Earliest = sort(Res_ABC$Date)[1]))
+# AllEstim
 
 ##
 ## Czuppon et al. 2021 with negBinom and R=1.9
@@ -334,7 +374,7 @@ epi_wu = ggplot(data=Data_Wuhan,
 ##
 Date_N = as.Date("2020-01-19")
 
-Results_COVID=read.csv(file="Fig1-2_Emergence/Output/COVID-19_Wuhan/Cases_EpiSize_Time_3072cases.csv") %>% 
+Results_COVID=read.csv(file="Fig2-3_Emergence/Output/COVID-19_Wuhan/Cases_EpiSize_Time_3072cases.csv") %>% 
     as_tibble() %>%
     mutate(Date=as.Date(Date_N-MinTime),
            Study=as.factor("Estimates")) %>%
@@ -358,6 +398,10 @@ Results_Pekar2022 = read.csv(file="Data/Emergence_Pekar2022.csv") %>%
     
 Results_Pekar2022$Date = Results_Pekar2022$Date %>% as.Date()
 # Results_Pekar2022
+
+## IqR
+IqR_Pekar2022 = Results_Pekar2022[Results_Pekar2022$Date>=quantile(Results_Pekar2022$Date,0.025,type=1) & Results_Pekar2022$Date<=quantile(Results_Pekar2022$Date,0.975,type=1),] 
+
 
 AllEstim = rbind(AllEstim, 
                  tibble(EpiContext = "COVID-19_Wuhan",
@@ -389,14 +433,32 @@ estim_wu = ggplot(data=Estimates_WU,
                  size=0.2, color=MyBlue) + 
     geom_segment(x=max(Results_COVID_IqR$Date), xend=max(Results_COVID_IqR$Date),
                  y=1.7,yend=2.3,
-                 size=0.2, color=MyBlue) + 
+                 size=0.2, color=MyBlue) +
+    geom_segment(x=min(IqR_ABC$Date), xend=min(IqR_ABC$Date),
+                 y=1.8,yend=2.2,
+                 size=0.2, color=MyGreen) + 
+    geom_segment(x=max(IqR_ABC$Date), xend=max(IqR_ABC$Date),
+                 y=1.8,yend=2.2,
+                 size=0.2, color=MyGreen) + 
+    geom_segment(x=min(IqR_Pekar2022$Date), xend=min(IqR_Pekar2022$Date),
+                 y=0.8,yend=1.2,
+                 size=0.2, color=MyViolet) + 
+    geom_segment(x=max(IqR_Pekar2022$Date), xend=max(IqR_Pekar2022$Date),
+                 y=0.8,yend=1.2,
+                 size=0.2, color=MyViolet) +
     ## Annotate estimates
     annotate(geom="text", 
-             x=as.Date("2019-12-12"), y=2, 
+             x=as.Date("2019-12-12"), y=3, 
              hjust=0,
              label="Estimates",
              size=3,
              color=MyBlue) +
+    annotate(geom="text", 
+             x=as.Date("2019-12-12"), y=2, 
+             hjust=0,
+             label="ABC estimates",
+             size=3,
+             color=MyGreen) +
     annotate(geom="text", 
              x=as.Date("2019-12-12"), y=1, 
              hjust=0,
@@ -409,8 +471,8 @@ estim_wu = ggplot(data=Estimates_WU,
     annotate("point", shape=3, x=as.Date("2020-01-11"), y=1.8,size=3) +
     annotate("text",x=as.Date("2020-01-13"), y=1.8,label="Median",hjust = 0,size=2.75) +
     ## Colors
-    scale_fill_manual(name="", values= c(MyBlue,MyViolet)) +
-    scale_color_manual(name="", values= c(MyBlue,MyViolet))  +
+    scale_fill_manual(name="", values= c(MyBlue,MyGreen,MyViolet)) +
+    scale_color_manual(name="", values= c(MyBlue,MyGreen,MyViolet))  +
     ## Axis and Labels
     scale_x_date(name="Date of emergence",
                  limits=as.Date(c("2019-09-11","2020-01-22")),
@@ -420,8 +482,8 @@ estim_wu = ggplot(data=Estimates_WU,
                  date_labels="%b %d",
                  expand=c(0,0)) +
     scale_y_discrete(name="Distributions",
-                     label=c("   ", ""),
-                     limits=c("Pekar et al. 2022","Estimates"),
+                     label=c("   ", "", ""),
+                     limits=c("Pekar et al. 2022","ABC estimates","Estimates"),
                      expand=c(0,0.5)) +
     theme_classic() +
     theme(legend.position="none",
@@ -435,7 +497,7 @@ estim_wu = ggplot(data=Estimates_WU,
 # Create one figure
 p_wu=plot_grid(epi_wu, estim_wu,
                ncol=1, nrow=2,
-               rel_heights=c(3,2))
+               rel_heights=c(1,1))
 p_wu 
  
 
@@ -449,10 +511,10 @@ AllEstim
 #### 4. SAVE RESULTS ###############
 ####
 if (SAVE_RES == "YES"){
-    ggsave("Fig1-2_Emergence/Output/Alpha_UK/Fig1_Emergence_Alpha_UK.pdf",
+    ggsave("Fig2-3_Emergence/Output/Alpha_UK/Fig2_Emergence_Alpha_UK.pdf",
            plot=p_uk, height=15, width=16, units=c("cm"))
     
-    ggsave("Fig1-2_Emergence/Output/COVID-19_Wuhan/Fig2_Emergence_COVID-19_Wuhan.pdf",
-           plot=p_wu, height=12.5, width=16, units=c("cm"))
+    ggsave("Fig2-3_Emergence/Output/COVID-19_Wuhan/Fig3_Emergence_COVID-19_Wuhan.pdf",
+           plot=p_wu, height=15, width=16, units=c("cm"))
     
 }
