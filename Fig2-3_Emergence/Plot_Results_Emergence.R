@@ -358,7 +358,7 @@ epi_wu = ggplot(data=Data_Wuhan,
                        # sec.axis=sec_axis(~.*coeff,name="Cumulative cases")
     ) +
     theme_classic() +
-    theme(axis.text.x=element_text(angle=90, hjust=1, vjust=1),
+    theme(axis.text.x=element_text(angle=90, hjust=1, vjust=0.5),
         axis.ticks.length=unit(6, "pt"),
         ggh4x.axis.ticks.length.minor=rel(0.5),
         plot.margin = unit(c(t=1,r=0.2,b=0,l=0.2), "cm")) +
@@ -391,6 +391,45 @@ AllEstim = tibble(EpiContext = "COVID-19_Wuhan",
                   P975 = quantile(Results_COVID$Date,0.975,type=1),
                   Earliest = sort(Results_COVID$Date)[1])
 
+
+## ABC simulations
+dates_ABC = seq(as.Date("2019-12-10"),as.Date("2019-09-01"),by ="-1 day") # Set dates
+
+Results_ABC = read.csv(file="Fig2-3_Emergence/ABC_Simulations/ABCresults.csv",,head=FALSE) %>% # Read results
+    as_tibble() %>%
+    mutate(Date = dates_ABC,
+           Freq = V1 * 10000,
+           Study=as.factor("ABC estimates"))  %>%
+    select(-V1)
+
+# Results_ABC
+
+# Expand Results_ABC frequencies
+aux = matrix(nrow=cumsum(Results_ABC$Freq)[length(cumsum(Results_ABC$Freq))],ncol=2)
+
+j = 1
+for (i in 1:length(Results_ABC$Date)) {
+    while (j <= cumsum(Results_ABC$Freq[1:i])[i]){
+        aux[j,1] = as.character(Results_ABC$Date[i])
+        aux[j,2] = "ABC estimates"
+        j = j + 1
+    }
+}
+Res_ABC <- as_tibble(data.frame(Date=as.Date(aux[,1]),Study = as.factor(aux[,2])))
+
+## IqR
+IqR_ABC = Res_ABC[Res_ABC$Date>=quantile(Res_ABC$Date,0.025,type=1) & Res_ABC$Date<=quantile(Res_ABC$Date,0.975,type=1),] 
+
+
+AllEstim = rbind(AllEstim, 
+                 tibble(EpiContext = "COVID-19_Wuhan",
+                        Study = "ABC estimates", 
+                        Median = median(Res_ABC$Date),
+                        P025 = quantile(Res_ABC$Date,0.025,type=1),
+                        P975 = quantile(Res_ABC$Date,0.975,type=1),
+                        Earliest = sort(Res_ABC$Date)[1]))
+# AllEstim
+
 ## Pekar et al 2022
 Results_Pekar2022 = read.csv(file="Data/Emergence_Pekar2022.csv") %>%
     mutate(Study=as.factor("Pekar et al. 2022")) %>%
@@ -414,7 +453,7 @@ AllEstim = rbind(AllEstim,
 ##
 ## Plot Estimates
 ##
-Estimates_WU = rbind(Results_COVID,Results_Pekar2022)
+Estimates_WU = rbind(Results_COVID,Res_ABC,Results_Pekar2022)
 
 estim_wu = ggplot(data=Estimates_WU,
                   aes(x=Date,y=Study,fill=Study,color=Study)) +
@@ -429,10 +468,10 @@ estim_wu = ggplot(data=Estimates_WU,
                  size=3) +
     ## Add IqR
     geom_segment(x=min(Results_COVID_IqR$Date), xend=min(Results_COVID_IqR$Date),
-                 y=1.7,yend=2.3,
+                 y=2.8,yend=3.2,
                  size=0.2, color=MyBlue) + 
     geom_segment(x=max(Results_COVID_IqR$Date), xend=max(Results_COVID_IqR$Date),
-                 y=1.7,yend=2.3,
+                 y=2.8,yend=3.2,
                  size=0.2, color=MyBlue) +
     geom_segment(x=min(IqR_ABC$Date), xend=min(IqR_ABC$Date),
                  y=1.8,yend=2.2,
@@ -487,7 +526,7 @@ estim_wu = ggplot(data=Estimates_WU,
                      expand=c(0,0.5)) +
     theme_classic() +
     theme(legend.position="none",
-          axis.text.x=element_text(angle=90, hjust=1, vjust=1),
+          axis.text.x=element_text(angle=90, hjust=1, vjust=0.5),
           axis.ticks.length=unit(6, "pt"),
           ggh4x.axis.ticks.length.minor=rel(0.5),
           plot.margin = unit(c(t=1,r=0.2,b=0,l=0.2), "cm")) +
