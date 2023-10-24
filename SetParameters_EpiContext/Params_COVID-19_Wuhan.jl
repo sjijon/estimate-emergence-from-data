@@ -12,7 +12,7 @@
 
 ## Oserved data
 ## Date and number of cases (symptoms onset)
-data = readdlm("../Data/CaseData_COVID-19_Wuhan.csv",',',skipstart=1)
+data = readdlm("Data/CaseData_COVID-19_Wuhan.csv",',',skipstart=1)
 data = data = data[data[:,1].<="2020-01-19",:] # Up to Jan 19 2020
 
 # Number of first N cases (symptoms onset)
