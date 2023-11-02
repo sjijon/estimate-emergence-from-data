@@ -1,7 +1,8 @@
-## Estimating the time distribution between the first infection and N cases
+## Jijón S, Czuppon P, Blanquart F & Débarre F (2023). 
+## Using early detection data to estimate the date of emergence of an epidemic outbreak.
+## https://github.com/sjijon/estimate-emergence-from-data
 ##
-## Jijon S, Czuppon P, Blanqart F., Débarre F
-## iEES, 2022
+## Estimate emergence on synthetic datasets
 ##
 #################################################
 

@@ -1,3 +1,8 @@
+## Jijón S, Czuppon P, Blanquart F & Débarre F (2023). 
+## Using early detection data to estimate the date of emergence of an epidemic outbreak.
+## https://github.com/sjijon/estimate-emergence-from-data
+##
+##
 ## Parametrizing the model
 ## 
 ## Infectious disease: Alpha variant
