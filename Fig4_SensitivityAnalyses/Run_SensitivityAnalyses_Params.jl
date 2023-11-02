@@ -134,7 +134,7 @@ for param in VarParam
         global R0_str = string(Int(10*R0))
         global p_detect_str = string(Int(10000*p_detect))
         global kappa_str = string(Int(round(100*kappa)))
-        global theta_str = string(Int(round(100*shape_detect)))
+        global theta_tau_str = string(Int(round(100*shape_detect)))
 
         global dir_output = string("Fig4_SensitivityAnalyses/Output/",EpiContext,"/",Var_str)
         mkpath(dir_output)
