@@ -83,7 +83,7 @@ MinTime_N_EpiSize_All = Array{Any}(undef,0,5) # Stats per dataset
         ##
         ## Read parameters for chosen epi context
         global dataset_num_ = dataset_num
-        include(string("../../SetParameters_EpiContext/Params_",EpiContext,".jl"))
+        include(string("Params_",EpiContext,".jl"))
 
         ## Print progress
         if dataset_num == 1
