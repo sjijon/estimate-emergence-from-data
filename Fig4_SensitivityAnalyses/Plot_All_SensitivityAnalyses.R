@@ -63,7 +63,7 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
                     as.Date("2020-09-01"),
                     seq(as.Date("2020-09-07"),as.Date("2020-09-28"),by="7 days"))
         
-        x_lims=as.Date(c("2020-06-14", "2020-09-20"))
+        x_lims=as.Date(c("2020-05-21", "2020-09-14"))
         y_lims=c(0,0.07)
         Ytitle="Alpha"
         MyXLabel="\nDate of emergence (2020)"
@@ -101,7 +101,7 @@ for(EpiContext in c("Alpha_UK","COVID-19_Wuhan")){
                    as.Date("2019-12-07"),
                    as.Date("2019-12-10"))
         
-        x_lims=as.Date(c("2019-10-14", "2019-12-10"))
+        x_lims=as.Date(c("2019-09-21", "2019-12-10"))
         y_lims=c(0,0.08)
         Ytitle="COVID-19"
         MyXLabel="\nDate of emergence (2019)"
