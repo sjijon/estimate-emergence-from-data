@@ -12,8 +12,8 @@ Sofía Jijón<sup>1</sup>, Peter Czuppon<sup>2</sup>, François Blanquart<sup>3<
 <sup>3</sup>Center for Interdisciplinary Research in Biology, CNRS, Collège de France, PSL Research University
 
 <strong>URL:</strong> 
-<a href="https://www.medrxiv.org/content/10.1101/2023.01.09.23284284v1" >Preprint</a> | 
-<a href="https://doi.org/10.5281/zenodo.10623614" >Static code</a> | 
+<a href="https://www.medrxiv.org/content/10.1101/2023.01.09.23284284v1" >MedRxiv</a> | 
+<a href="https://doi.org/10.5281/zenodo.10657737" >Zenodo</a> | 
 <!-- <a href="" >Article</a> -->
 
 ## Abstract
